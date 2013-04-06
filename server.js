@@ -100,6 +100,25 @@ function handleMKDIR (req, res, next) {
                     console.warn('' + error);
                     res.writeHead(500);
                     res.end('500 Create Failed\n');
+                    return;
+                };
+                var qs = url.parse(req.url).query;
+                var options = querystring.parse(qs);
+                if (options && options.init) {
+                    var optionsFilename = path.join(filename, optionsFile);
+                    fs.writeFile(
+                        optionsFilename, '{}',
+                        function handleCreate (error) {
+                            if(!!error) {
+                                console.warn('Error creating ' + filename);
+                                console.warn('' + error);
+                                res.writeHead(500);
+                                res.end('500 Create Failed\n');
+                                return;
+                            }
+                            res.writeHead(201);
+                            res.end('201 Created and Initialized\n');
+                        });
                 } else {
                     res.writeHead(201);
                     res.end('201 Created\n');
