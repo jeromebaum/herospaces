@@ -100,7 +100,7 @@ function handleFileUpload (req, res, filename, buffer) {
 
 function respondFile (filename, res) {
     var theFilename = filename;
-    fs.stat(theFilename, function handleStat (stat) {
+    fs.stat(theFilename, function handleStat (err, stat) {
         if (stat && stat.isDirectory) {
             theFilename = path.join(filename, 'index.html');
         };
