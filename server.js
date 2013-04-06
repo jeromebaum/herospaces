@@ -113,7 +113,8 @@ function findOptionsFile (filename, cb) {
             cb(candidate);
         } else {
             var oneLevelUp = path.resolve(filename, '..');
-            if (oneLevelUp === filename) {
+            var relative = path.relative(basePath, dirname);
+            if (oneLevelUp === filename || relative == '..') {
                 cb();
                 return;
             };
