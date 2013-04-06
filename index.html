@@ -23,6 +23,10 @@
                 </td>
             </tr>
             <tr>
+                <td>Result:</td>
+                <td><span id="lblResult"/></td>
+            </tr>
+            <tr>
                 <td colspan="2" style="padding: 10px;">
                     <textarea id="txtFile"
                         style="width: 440px; height: 400px;"></textarea>
@@ -30,6 +34,39 @@
             </tr>
         </table>
         <script>
+            var blinkMs = 1200;
+
+            function blinkStatus (text) {
+                var lbl = document.getElementById("lblResult");
+                lbl.style.color = "black";
+                lbl.textContent = text;
+                setTimeout(function unblink () {
+                    lbl.style.color = "#ddd";
+                }, blinkMs);
+            };
+
+            function bindButtons () {
+                document.getElementById("btnGet").onclick = function onGet () {
+                    var path = document.getElementById("txtPath").value;
+                    xhrDo('GET', path, null, function success (data) {
+                        document.getElementById("txtFile").value = data;
+                        blinkStatus('Success');
+                    }, function error (code) {
+                        blinkStatus('Error: ' + code);
+                    });
+                };
+            };
+
+            function bindLoad (cb) {
+                var oldCb = window.onload;
+                window.onload = function onLoad () {
+                    if (!!oldCb) { setTimeout(oldCb, 0); }
+                    cb();
+                };
+            };
+
+            bindLoad(bindButtons);
+
             function newXHR () {
                 if (window.XMLHttpRequest) {
                     return new XMLHttpRequest();
@@ -40,8 +77,8 @@
 
             function xhrThen(xhr, successCb, errorCb) {
                 var oldCb = xhr.onreadystatechange;
-                xhr.onreadystatechange = function () {
-                    if (!!oldCb) { setTimeout(oldCb, 0); };
+                xhr.onreadystatechange = function onXHRResponse () {
+                    if (!!oldCb) { setTimeout(oldCb, 0); };
                     if (xhr.readyState != 4) { return; };
                     if (xhr.status >= 400) { errorCb(xhr.status); return; };
                     successCb(xhr.responseText);
