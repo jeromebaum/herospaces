@@ -18,7 +18,7 @@ function handleGET (req, res, next) {
     var filename = path.join(basePath, uri);
     var basename = path.basename(uri);
     if (basename === optionsFile) {
-        isAuthed(filename, req, function handleAuth (authed) {
+        isAuthed('admin', filename, req, function handleAuth (authed) {
             if (!authed) {
                 res.writeHead(403);
                 res.end('403 No Thanks\n');
@@ -31,7 +31,7 @@ function handleGET (req, res, next) {
     var qs = url.parse(req.url).query;
     var options = querystring.parse(qs);
     if (options && options.listing) {
-        isAuthed(filename, req, function handleAuth (authed) {
+        isAuthed('ls', filename, req, function handleAuth (authed) {
             if (!authed) {
                 res.writeHead(403);
                 res.end('403 No Thanks\n');
@@ -56,7 +56,7 @@ function handlePUT (req, res, next) {
     var uri = url.parse(req.url).pathname;
     var filename = path.join(basePath, uri);
     req.pause();
-    isAuthed(filename, req, function handleAuth (authed) {
+    isAuthed('put', filename, req, function handleAuth (authed) {
         if (!authed) {
             res.writeHead(403);
             res.end('403 No Thanks\n');
@@ -70,7 +70,7 @@ function handleMKDIR (req, res, next) {
     if (req.method !== 'POST') { next(); return; };
     var uri = url.parse(req.url).pathname;
     var filename = path.join(basePath, uri);
-    isAuthed(filename, req, function handleAuth (authed) {
+    isAuthed('mkdir', filename, req, function handleAuth (authed) {
         if (!authed) {
             res.writeHead(403);
             res.end('403 No Thanks\n');
@@ -146,12 +146,15 @@ function respondFile (filename, res) {
     });
 };
 
-function isAuthed (filename, req, cb) {
+function isAuthed (permission, filename, req, cb) {
     var qs = url.parse(req.url).query;
     var options = querystring.parse(qs);
     var providedKey = options.key;
-    writeKeyFor(filename, function handleKey (writeKey) {
-        cb(writeKey === providedKey);
+    optionsFor(filename, function checkPerms (options) {
+        var allKeys = options && options.keys;
+        var relevantKeys = allKeys && allKeys[permission];
+        var matchIndex = relevantKeys && relevantKeys.indexOf(providedKey);
+        cb(matchIndex >= 0 || !relevantKeys);
     });
 };
 
@@ -183,12 +186,6 @@ function optionsFor (filename, cb) {
             var obj = JSON.parse(file);
             cb(obj);
         });
-    });
-};
-
-function writeKeyFor (filename, cb) {
-    optionsFor(filename, function (options) {
-        cb(options && options.writeKey);
     });
 };
 
