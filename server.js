@@ -159,14 +159,13 @@ function isAuthed (permission, filename, req, cb) {
 };
 
 function findOptionsFile (filename, cb) {
-    var dirname = path.dirname(filename);
-    var candidate = path.join(dirname, optionsFile);
+    var candidate = path.join(filename, optionsFile);
     fs.exists(candidate, function handleStat (exists) {
         if (exists) {
             cb(candidate);
         } else {
             var oneLevelUp = path.resolve(filename, '..');
-            var relative = path.relative(basePath, dirname);
+            var relative = path.relative(basePath, filename);
             if (oneLevelUp === filename || relative == '..') {
                 cb();
                 return;
