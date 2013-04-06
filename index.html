@@ -1,0 +1,59 @@
+<!DOCTYPE html5>
+<html>
+    <head>
+        <title>Hero Spaces &ndash; Minimal IDE</title>
+    </head>
+    <body>
+        <table border="1" style="margin: 40px auto;">
+            <tr>
+                <td>Path:</td>
+                <td>
+                    <input type="text" id="txtPath" style="width: 400px;"/>
+                </td>
+            </tr>
+            <tr>
+                <td>Key:</td>
+                <td>
+                    <input type="text" id="txtKey" style="width: 200px;"/>
+                    <input type="submit" id="btnMkdir" value="MkDir"/>
+                    <input type="submit" id="btnPut" value="PUT"/>
+                    |
+                    <input type="submit" id="btnList" value="List"/>
+                    <input type="submit" id="btnGet" value="GET"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="padding: 10px;">
+                    <textarea id="txtFile"
+                        style="width: 440px; height: 400px;"></textarea>
+                </td>
+            </tr>
+        </table>
+        <script>
+            function newXHR () {
+                if (window.XMLHttpRequest) {
+                    return new XMLHttpRequest();
+                } else {
+                    return new ActiveXObject("Msxml2.XMLHTTP");
+                };
+            };
+
+            function xhrThen(xhr, successCb, errorCb) {
+                var oldCb = xhr.onreadystatechange;
+                xhr.onreadystatechange = function () {
+                    if (!!oldCb) { setTimeout(oldCb, 0); };
+                    if (xhr.readyState != 4) { return; };
+                    if (xhr.status >= 400) { errorCb(xhr.status); return; };
+                    successCb(xhr.responseText);
+                };
+            };
+
+            function xhrDo(method, url, data, successCb, errorCb) {
+                var xhr = newXHR();
+                xhrThen(xhr, successCb, errorCb);
+                xhr.open(method, url, /* async: */ true);
+                xhr.send(data);
+            };
+        </script>
+    </body>
+</html>
