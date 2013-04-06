@@ -9,7 +9,7 @@ var connect = require('connect');
 
 var port = process.env.PORT || 4000;
 var basePath = './';
-var optionsFile = 'magic.options';
+var optionsFile = '_options';
 
 
 function handleGET (req, res, next) {
