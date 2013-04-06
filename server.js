@@ -112,14 +112,26 @@ function handleFileUpload (req, res, filename, buffer) {
 };
 
 function respondDir (filename, res) {
-    fs.readdir(filename, function handleDir (err, files) {
+    fs.readdir(filename, function handleDir (err, entries) {
         if (!!err) {
             res.writeHead(500);
             res.end('500 Read Failed\n');
         } else {
-            var obj = { files: files };
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify(obj));
+            var leftToCheck = entries.length;
+            var obj = { files: [], dirs: [] };
+            entries.forEach(function checkEntry (entry) {
+                var fullname = path.join(filename, entry);
+                fs.stat(fullname, function handleStat (err, stat) {
+                    if (stat && stat.isDirectory()) {
+                        obj.dirs.push(entry);
+                    } else {
+                        obj.files.push(entry);
+                    };
+                    if (--leftToCheck) { return; }
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify(obj));
+                });
+            });
         };
     });
 };
