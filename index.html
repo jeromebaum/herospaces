@@ -45,16 +45,18 @@
                 }, blinkMs);
             };
 
+            function doGet () {
+                var path = document.getElementById("txtPath").value;
+                xhrDo('GET', path, null, function success (data) {
+                    document.getElementById("txtFile").value = data;
+                    blinkStatus('Success');
+                }, function error (code) {
+                    blinkStatus('Error: ' + code);
+                });
+            };
+
             function bindButtons () {
-                document.getElementById("btnGet").onclick = function onGet () {
-                    var path = document.getElementById("txtPath").value;
-                    xhrDo('GET', path, null, function success (data) {
-                        document.getElementById("txtFile").value = data;
-                        blinkStatus('Success');
-                    }, function error (code) {
-                        blinkStatus('Error: ' + code);
-                    });
-                };
+                document.getElementById("btnGet").onclick = doGet;
             };
 
             function bindLoad (cb) {
