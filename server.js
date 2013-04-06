@@ -26,10 +26,11 @@ function handleGET (req, res, next) {
 
 function handlePUT (req, res, next) {
     if (req.method !== 'PUT') { next(); };
-    var file = '.' + req.url;
-    var stream = fs.createWriteStream(file);
+    var uri = url.parse(req.url).pathname;
+    var filename = path.join(basePath, req.uri);
+    var stream = fs.createWriteStream(filename);
     stream.on('error', function handlePUTError (error) {
-        console.warn('Error creating WriteStream for file ' + file);
+        console.warn('Error creating WriteStream for file ' + filename);
         console.warn('' + error);
         res.writeHead(500);
         res.end('500 Create Failed\n');
