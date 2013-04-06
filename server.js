@@ -127,7 +127,7 @@ function respondDir (filename, res) {
 function respondFile (filename, res) {
     var theFilename = filename;
     fs.stat(theFilename, function handleStat (err, stat) {
-        if (stat && stat.isDirectory) {
+        if (stat && stat.isDirectory()) {
             theFilename = path.join(filename, 'index.html');
         };
         fs.exists(theFilename, function handleStat (exists) {
