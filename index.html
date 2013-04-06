@@ -63,9 +63,19 @@
                 });
             };
 
+            function doMkdir () {
+                var path = document.getElementById("txtPath").value;
+                xhrDo('POST', path, null, function success (data) {
+                    blinkStatus('Success');
+                }, function error (code) {
+                    blinkStatus('Error: ' + code);
+                });
+            };
+
             function bindButtons () {
                 document.getElementById("btnGet").onclick = doGet;
                 document.getElementById("btnPut").onclick = doPut;
+                document.getElementById("btnMkdir").onclick = doMkdir;
             };
 
             function bindLoad (cb) {
