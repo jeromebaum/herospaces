@@ -53,6 +53,30 @@ function handlePUT (req, res, next) {
     });
 };
 
+function handleMKDIR (req, res, next) {
+    if (req.method !== 'POST') { next(); return; };
+    var uri = url.parse(req.url).pathname;
+    var filename = path.join(basePath, uri);
+    isAuthed(filename, req, function handleAuth (authed) {
+        if (!authed) {
+            res.writeHead(403);
+            res.end('403 No Thanks\n');
+        } else {
+            fs.mkdir(filename, function handleMkdir (error) {
+                if (!!error) {
+                    console.warn('Error with mkdir for file ' + filename);
+                    console.warn('' + error);
+                    res.writeHead(500);
+                    res.end('500 Create Failed\n');
+                } else {
+                    res.writeHead(201);
+                    res.end('201 Created\n');
+                };
+            });
+        };
+    });
+};
+
 function errorOut (req, res) {
     res.writeHead(500);
     res.end('500 Problem\n');
@@ -142,6 +166,10 @@ function writeKeyFor (filename, cb) {
     });
 };
 
-var app = connect().use(handleGET).use(handlePUT).use(errorOut);
+var app = connect().
+        use(handleGET).
+        use(handlePUT).
+        use(handleMKDIR).
+        use(errorOut);
 
 http.createServer(app).listen(port);
