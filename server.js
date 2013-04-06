@@ -41,13 +41,20 @@ function handleGET (req, res, next) {
         });
         return;
     };
-    fs.exists(filename, function respond (response) {
-        if (!!response) {
-            respondFile(filename, res);
-        } else {
-            res.writeHead(404);
-            res.end('404 Not Found\n');
+    isAuthed('get', filename, req, function handleAuth (authed) {
+        if (!authed) {
+            res.writeHead(403);
+            res.end('403 No Thanks\n');
+            return;
         };
+        fs.exists(filename, function respond (response) {
+            if (!!response) {
+                respondFile(filename, res);
+            } else {
+                res.writeHead(404);
+                res.end('404 Not Found\n');
+            };
+        });
     });
 };
 
