@@ -68,6 +68,18 @@ function handlePUT (req, res, next) {
             res.writeHead(403);
             res.end('403 No Thanks\n');
         } else {
+            var basename = path.basename(uri);
+            if (basename === optionsFile) {
+                isAuthed('admin', filename, req, function handleAuth (authed) {
+                    if (!authed) {
+                        res.writeHead(403);
+                        res.end('403 No Thanks\n');
+                    } else {
+                        handleFileUpload(req, res, filename);
+                    };
+                });
+                return;
+            };
             handleFileUpload(req, res, filename);
         };
     });
