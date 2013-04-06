@@ -28,6 +28,19 @@ function handleGET (req, res, next) {
         });
         return;
     };
+    var qs = url.parse(req.url).query;
+    var options = querystring.parse(qs);
+    if (options && options.listing) {
+        isAuthed(filename, req, function handleAuth (authed) {
+            if (!authed) {
+                res.writeHead(403);
+                res.end('403 No Thanks\n');
+            } else {
+                respondDir(filename, res);
+            };
+        });
+        return;
+    };
     fs.exists(filename, function respond (response) {
         if (!!response) {
             respondFile(filename, res);
@@ -96,6 +109,19 @@ function handleFileUpload (req, res, filename, buffer) {
         res.end('201 Created\n');
     });
     req.pipe(stream);
+};
+
+function respondDir (filename, res) {
+    fs.readdir(filename, function handleDir (err, files) {
+        if (!!err) {
+            res.writeHead(500);
+            res.end('500 Read Failed\n');
+        } else {
+            var obj = { files: files };
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify(obj));
+        };
+    });
 };
 
 function respondFile (filename, res) {
