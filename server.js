@@ -53,7 +53,7 @@ function respondFile (filename, res) {
     var theFilename = filename;
     fs.stat(filename, function handleStat (stat) {
         if (stat && stat.isDirectory) {
-            theFilename = filename + 'index.html';
+            theFilename = path.join(filename, 'index.html');
         };
         fs.readFile(filename, function handleFile (exists, file) {
             if (!!exists) {
