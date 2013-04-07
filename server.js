@@ -51,8 +51,27 @@ function handleGET (req, res, next) {
             if (!!response) {
                 respondFile(filename, res);
             } else {
-                res.writeHead(404);
-                res.end('404 Not Found\n');
+                optionsFor(filename, function handleOptions (options) {
+                    if (!(options && options.prototype)) {
+                        res.writeHead(404);
+                        res.end('404 Not Found\n');
+                        return;
+                    };
+                    findOptionsFile(filename, function find (optionsFilename) {
+                        var optsdir = path.dirname(optionsFilename);
+                        var protodir = path.resolve(optsdir, options.prototype);
+                        var relName = path.relative(optsdir, filename);
+                        var prototype = path.join(protodir, relName);
+                        fs.exists(prototype, function respond (response) {
+                            if (!!response) {
+                                respondFile(prototype, res);
+                            } else {
+                                res.writeHead(404);
+                                res.end('404 Not Found\n');
+                            };
+                        });
+                    });
+                });
             };
         });
     });
