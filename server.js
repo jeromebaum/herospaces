@@ -8,7 +8,7 @@ var mime = require('mime');
 var connect = require('connect');
 
 var port = process.env.PORT || 4000;
-var basePath = './';
+var basePath = './content/';
 var optionsFile = '_options';
 
 
