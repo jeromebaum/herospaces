@@ -1,1 +1,2 @@
-force basePath for all file access
+* force basePath for all file access
+* enforce keys of prototypes (inherit restrictions)
