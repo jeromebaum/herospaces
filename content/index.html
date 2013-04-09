@@ -1,0 +1,88 @@
+<!DOCTYPE html5>
+<html>
+    <head>
+        <title>Hero Spaces &ndash; Create Your Space</title>
+    </head>
+    <body>
+        <h1>Hero Spaces &ndash; Create Your Space</h1>
+        <p>Pick a template:</p>
+        <p>
+            <select id="selectTemplate">
+                <option value="amber-337fff6">Amber</option>
+                <option value="minimal-trunk">Minimal</option>
+            </select>
+        </p>
+        <p>
+            <input type="submit" id="btnCreate" value="Create"/>
+        </p>
+        <script>
+            function getTemplateName () {
+                var select = document.getElementById("selectTemplate");
+                var template = select.options[select.selectedIndex].value;
+                return template;
+            };
+
+            function generateName () {
+                return 'time-' + (new Date()).valueOf();
+            };
+
+            function createSpace () {
+                var spaceName = generateName();
+                var spaceUrl = '/spaces/' + spaceName + '/';
+                var spaceIndex = spaceUrl + 'index.html';
+                var templateName = getTemplateName();
+                var templatePath = '../../templates/' + templateName;
+                var options = '{"prototype": "' + templatePath + '"}\n';
+                var optionsPath = spaceUrl + '_options';
+                xhrDo('POST', spaceUrl + '?init=1', null, function success () {
+                    xhrDo('PUT', optionsPath, options, function success () {
+                        location.href = spaceIndex;
+                    }, function error (code) {
+                        alert('Error on setting options: ' + code);
+                    });
+                }, function error (code) {
+                    alert('Error on mkdir: ' + code);
+                });
+            };
+
+            function bindButtons () {
+                document.getElementById('btnCreate').onclick = createSpace;
+            };
+
+            function bindLoad (cb) {
+                var oldCb = window.onload;
+                window.onload = function onLoad () {
+                    if (!!oldCb) { setTimeout(oldCb, 0); }
+                    cb();
+                };
+            };
+
+            bindLoad(bindButtons);
+
+            function newXHR () {
+                if (window.XMLHttpRequest) {
+                    return new XMLHttpRequest();
+                } else {
+                    return new ActiveXObject("Msxml2.XMLHTTP");
+                };
+            };
+
+            function xhrThen(xhr, successCb, errorCb) {
+                var oldCb = xhr.onreadystatechange;
+                xhr.onreadystatechange = function onXHRResponse () {
+                    if (!!oldCb) { setTimeout(oldCb, 0); };
+                    if (xhr.readyState != 4) { return; };
+                    if (xhr.status >= 400) { errorCb(xhr.status); return; };
+                    successCb(xhr.responseText);
+                };
+            };
+
+            function xhrDo(method, url, data, successCb, errorCb) {
+                var xhr = newXHR();
+                xhrThen(xhr, successCb, errorCb);
+                xhr.open(method, url, /* async: */ true);
+                xhr.send(data);
+            };
+        </script>
+    </body>
+</html>
