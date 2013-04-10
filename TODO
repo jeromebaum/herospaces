@@ -1,3 +1,2 @@
-* force basePath for all file access
 * enforce keys of prototypes (inherit restrictions)
 * auto-mkdir from prototype on PUT
