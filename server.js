@@ -12,6 +12,19 @@ var basePath = './content/';
 var optionsFile = '_options';
 
 
+function deny (res) {
+    res.writeHead(403);
+    res.end('403 No Thanks\n');
+};
+
+function preventEvilPaths (req, res, next) {
+    var uri = url.parse(req.url).pathname;
+    var filename = path.resolve(basePath, uri);
+    var relative = path.relative(basePath, filename);
+    if (relative.indexOf('..') !== -1) { deny(res); return; }
+    next();
+};
+
 function handleGET (req, res, next) {
     if (req.method !== 'GET') { next(); return; };
     var uri = url.parse(req.url).pathname;
@@ -258,6 +271,7 @@ function optionsFor (filename, cb) {
 };
 
 var app = connect().
+        use(preventEvilPaths).
         use(handleGET).
         use(handlePUT).
         use(handleMKDIR).
