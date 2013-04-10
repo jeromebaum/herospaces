@@ -19,7 +19,7 @@ function deny (res) {
 
 function preventEvilPaths (req, res, next) {
     var uri = url.parse(req.url).pathname;
-    var filename = path.resolve(basePath, uri);
+    var filename = path.join(basePath, uri);
     var relative = path.relative(basePath, filename);
     if (relative.indexOf('..') !== -1) { deny(res); return; }
     next();
