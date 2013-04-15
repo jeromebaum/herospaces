@@ -11,7 +11,7 @@
     var exports = {};
 
     exports.name = 'HeroClient';
-    exports.version = '0.1.1';
+    exports.version = '0.2.0';
 
     /* Utility methods {{{ */
     function doRequest (method, url, data, cb) {
@@ -169,7 +169,7 @@
     /* Package repository client {{{ */
     /* Usage examples:
      *
-     *     repository.atHeroSpace('amber').package('foo').
+     *     repository.atHeroSpaces('amber').package('foo').
      *         version(1, 2, 3).get('code.js', function (err, data) { ... });
      */
     var repository = (function () {
@@ -287,9 +287,10 @@
                 return repository(url);
             };
 
-            that.atHeroSpace = function (area) {
+            that.atHeroSpaces = function (area) {
                 return repository('http://www.herospaces.com/repo/' + area);
             };
+            that.atHeroSpace = that.atHeroSpaces; // Backwards-compatibility.
 
             return that;
         };
