@@ -271,6 +271,7 @@ function optionsFor (filename, cb) {
 };
 
 var app = connect().
+        use(connect.middleware.logger()).
         use(preventEvilPaths).
         use(handleGET).
         use(handlePUT).
