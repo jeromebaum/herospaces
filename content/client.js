@@ -167,6 +167,11 @@
     exports.mkdir = mkdir;
     /* }}} */
     /* Package repository client {{{ */
+    /* Usage examples:
+     *
+     *     repository.atHeroSpace('amber').package('foo').
+     *         version(1, 2, 3).get('code.js', function (data) { ... });
+     */
     var repository = (function () {
         function packageVersion (package, major, minor, patch) {
             var that = {};
