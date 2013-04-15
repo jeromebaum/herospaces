@@ -170,7 +170,7 @@
     /* Usage examples:
      *
      *     repository.atHeroSpace('amber').package('foo').
-     *         version(1, 2, 3).get('code.js', function (data) { ... });
+     *         version(1, 2, 3).get('code.js', function (err, data) { ... });
      */
     var repository = (function () {
         function packageVersion (package, major, minor, patch) {
