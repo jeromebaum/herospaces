@@ -79,6 +79,27 @@
             };
         };
     };
+
+    function map (obj, cb) {
+        var results = [];
+        forEach(obj, function each (i, value) {
+            results.push(cb(value));
+        });
+        return results;
+    };
+
+    function max (list, cmp, cb) {
+        if (list.length === 0) {
+            throw new Error("Need at least one value for max()");
+        };
+        var max = list[0];
+        forEach(list, function each (i, value) {
+            if (cmp(max, value) < 0) {
+                max = value;
+            };
+        });
+        return max;
+    };
     /* }}} */
     /* File interface {{{ */
     function get (fileurl, cb) {
