@@ -15,6 +15,7 @@
         <p>
             <input type="submit" id="btnCreate" value="Create"/>
         </p>
+        <script src="/client.js"></script>
         <script>
             function getTemplateName () {
                 var select = document.getElementById("selectTemplate");
@@ -31,17 +32,63 @@
                 var spaceUrl = '/spaces/' + spaceName + '/';
                 var spaceIndex = spaceUrl + 'index.html';
                 var templateName = getTemplateName();
+                var templateUrl = '/templates/' + templateName;
                 var templatePath = '../../templates/' + templateName;
                 var options = '{"prototype": "' + templatePath + '"}\n';
                 var optionsPath = spaceUrl + '_options';
-                xhrDo('POST', spaceUrl + '?init=1', null, function success () {
-                    xhrDo('PUT', optionsPath, options, function success () {
-                        location.href = spaceIndex;
-                    }, function error (code) {
-                        alert('Error on setting options: ' + code);
+                function initSpace (cb) {
+                    HeroClient.mkdir(spaceUrl + '?init=1', function (err) {
+                        if (err) {
+                            alert('Error on space init: ' + err);
+                            return;
+                        };
+                        cb();
                     });
-                }, function error (code) {
-                    alert('Error on mkdir: ' + code);
+                };
+                function setOptions (cb) {
+                    HeroClient.put(optionsPath, options, function (err) {
+                        if (err) {
+                            alert('Error on settings options: ' + err);
+                            return;
+                        };
+                        cb();
+                    });
+                };
+                function mkDirStructure (cb) {
+                    var counter = 1;
+                    HeroClient.find(templateUrl, function (err, path, type) {
+                        if (err) {
+                            alert('Error during recursive find: ' + err);
+                            return;
+                        };
+                        if (type === 'file') { return; };
+                        if (type === 'dir') {
+                            counter++;
+                            HeroClient.mkdir(spaceUrl + path, function (err) {
+                                if (err) {
+                                    alert('Error during mkdir: ' + err);
+                                    return;
+                                };
+                                counter--;
+                                if (counter === 0) {
+                                    cb();
+                                };
+                            });
+                        };
+                        if (type === 'done') {
+                            counter--;
+                            if (counter === 0) {
+                                cb();
+                            };
+                        };
+                    });
+                };
+                initSpace(function () {
+                    setOptions(function () {
+                        mkDirStructure(function () {
+                            location.href = spaceIndex;
+                        });
+                    });
                 });
             };
 
@@ -58,31 +105,6 @@
             };
 
             bindLoad(bindButtons);
-
-            function newXHR () {
-                if (window.XMLHttpRequest) {
-                    return new XMLHttpRequest();
-                } else {
-                    return new ActiveXObject("Msxml2.XMLHTTP");
-                };
-            };
-
-            function xhrThen(xhr, successCb, errorCb) {
-                var oldCb = xhr.onreadystatechange;
-                xhr.onreadystatechange = function onXHRResponse () {
-                    if (!!oldCb) { setTimeout(oldCb, 0); };
-                    if (xhr.readyState != 4) { return; };
-                    if (xhr.status >= 400) { errorCb(xhr.status); return; };
-                    successCb(xhr.responseText);
-                };
-            };
-
-            function xhrDo(method, url, data, successCb, errorCb) {
-                var xhr = newXHR();
-                xhrThen(xhr, successCb, errorCb);
-                xhr.open(method, url, /* async: */ true);
-                xhr.send(data);
-            };
         </script>
     </body>
 </html>
