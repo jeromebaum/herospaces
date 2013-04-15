@@ -11,7 +11,7 @@
     var exports = {};
 
     exports.name = 'HeroClient';
-    exports.version = '0.1.0';
+    exports.version = '0.1.1';
 
     /* Utility methods {{{ */
     function doRequest (method, url, data, cb) {
@@ -207,7 +207,7 @@
                     admin: 0, // Allow reads of _options. PUT disabled above.
                     mkdir: []
                 }};
-                var freezeString = JSON.serialize(freezeOptions);
+                var freezeString = JSON.stringify(freezeOptions);
                 put(versionUrl + '/_options', freezeString, cb);
             };
             that.put = function (path, data, cb) {
