@@ -176,21 +176,45 @@
         function packageVersion (package, major, minor, patch) {
             var that = {};
 
+            var versionString = [major, minor, patch].join('.');
+            var packageUrl = package.url();
+            var sep = (packageUrl.slice(packageUrl.length-1) === '/') ?
+                '' : '/';
+            var versionUrl = packageUrl + sep + versionString;
+
             that.major = function () { return major; };
             that.minor = function () { return minor; };
             that.patch = function () { return patch; };
+            that.url = function () { return versionUrl; };
 
+            that.cmp = function (other) {
+                if (that.major < other.major) { return -1; };
+                if (that.major > other.major) { return  1; };
+                if (that.minor < other.minor) { return -1; };
+                if (that.minor > other.minor) { return  1; };
+                if (that.patch < other.patch) { return -1; };
+                if (that.patch > other.patch) { return  1; };
+                return 0;
+            };
             that.create = function (cb) {
-                ;
+                mkdir(versionUrl + '?&init=1&', cb);
             };
             that.freeze = function (cb) {
-                ;
+                var freezeOptions = {keys: {
+                    get: 0,
+                    put: [], // No PUT e.g. on _options.
+                    ls: 0,
+                    admin: 0, // Allow reads of _options. PUT disabled above.
+                    mkdir: []
+                }};
+                var freezeString = JSON.serialize(freezeOptions);
+                put(versionUrl + '/_options', freezeString, cb);
             };
             that.put = function (path, data, cb) {
-                ;
+                put(versionUrl + '/' + path, data, cb);
             };
             that.get = function (path, cb) {
-                ;
+                get(versionUrl + '/' + path, cb);
             };
 
             return that;
@@ -203,6 +227,20 @@
             var sep = (repoRoot.slice(repoRoot.length-1) === '/') ? '' : '/';
             var packageUrl = repoRoot + sep + name;
 
+            function versionFromString (versionString) {
+                var parts = versionString.split('.');
+                if (parts.length !== 3) {
+                    throw new Error("A version should have three parts");
+                };
+                var numbers = map(parts, parseInt);
+                var major = numbers[0];
+                var minor = numbers[1];
+                var patch = numbers[2];
+                return packageVersion(that, major, minor, patch);
+            };
+
+            that.url = function () { return packageUrl; };
+
             that.version = function (major, minor, patch) {
                 return packageVersion(that, major, minor, patch);
             };
@@ -210,10 +248,21 @@
                 mkdir(packageUrl + '?&init=1&', cb);
             };
             that.allVersions = function (cb) {
-                ;
+                ls(packageUrl, function handleInfo (err, info) {
+                    if (err) { cb(err); return; };
+                    var versionStrings = info.dirs || [];
+                    var versions = map(versionStrings, versionFromString);
+                    cb(null, versions);
+                });
             };
             that.latestVersion = function (cb) {
-                ;
+                that.allVersions(function handleVersions (err, versions) {
+                    if (err) { cb(err); return; };
+                    var maxVersion = max(versions, function cmp (a, b) {
+                        return a.cmp(b);
+                    });
+                    cb(null, maxVersion);
+                });
             };
 
             return that;
