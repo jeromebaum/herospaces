@@ -13,6 +13,7 @@
     exports.name = 'HeroClient';
     exports.version = '0.0.0';
 
+    /* Utility methods {{{ */
     function doRequest (method, url, data, cb) {
         function useXhr (xhr) {
             xhr.onreadystatechange = function onXHRResponse () {
@@ -78,7 +79,8 @@
             };
         };
     };
-
+    /* }}} */
+    /* File interface {{{ */
     function get (fileurl, cb) {
         doRequest('GET', fileurl, null, cb);
     };
@@ -142,6 +144,7 @@
         doRequest('POST', dirurl, null, cb);
     };
     exports.mkdir = mkdir;
+    /* }}} */
 
     return exports;
 })));
