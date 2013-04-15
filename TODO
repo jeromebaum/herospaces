@@ -1,1 +1,2 @@
 * enforce keys of prototypes (inherit restrictions)
+* "package" is sometimes a reserved keyword
