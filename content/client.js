@@ -11,7 +11,7 @@
     var exports = {};
 
     exports.name = 'HeroClient';
-    exports.version = '0.0.1';
+    exports.version = '0.1.0';
 
     /* Utility methods {{{ */
     function doRequest (method, url, data, cb) {
@@ -296,6 +296,7 @@
 
         return repositoryFactory();
     })();
+    exports.repository = repository;
     /* }}} */
 
     return exports;
