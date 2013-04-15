@@ -11,7 +11,7 @@
     var exports = {};
 
     exports.name = 'HeroClient';
-    exports.version = '0.0.0';
+    exports.version = '0.0.1';
 
     /* Utility methods {{{ */
     function doRequest (method, url, data, cb) {
@@ -144,6 +144,83 @@
         doRequest('POST', dirurl, null, cb);
     };
     exports.mkdir = mkdir;
+    /* }}} */
+    /* Package repository client {{{ */
+    var repository = (function () {
+        function packageVersion (package, major, minor, patch) {
+            var that = {};
+
+            that.major = function () { return major; };
+            that.minor = function () { return minor; };
+            that.patch = function () { return patch; };
+
+            that.create = function (cb) {
+                ;
+            };
+            that.freeze = function (cb) {
+                ;
+            };
+            that.put = function (path, data, cb) {
+                ;
+            };
+            that.get = function (path, cb) {
+                ;
+            };
+
+            return that;
+        };
+
+        function package (repository, name) {
+            var that = {};
+
+            var repoRoot = repository.url();
+            var sep = (repoRoot.slice(repoRoot.length-1) === '/') ? '' : '/';
+            var packageUrl = repoRoot + sep + name;
+
+            that.version = function (major, minor, patch) {
+                return packageVersion(that, major, minor, patch);
+            };
+            that.create = function (cb) {
+                mkdir(packageUrl + '?&init=1&', cb);
+            };
+            that.allVersions = function (cb) {
+                ;
+            };
+            that.latestVersion = function (cb) {
+                ;
+            };
+
+            return that;
+        };
+
+        function repository (url) {
+            var that = {};
+
+            that.url = function () { return url; };
+
+            that.package = function (name) {
+                return package(that, name);
+            };
+
+            return that;
+        };
+
+        function repositoryFactory () {
+            var that = {};
+
+            that.atUrl = function (url) {
+                return repository(url);
+            };
+
+            that.atHeroSpace = function (area) {
+                return repository('http://www.herospaces.com/repo/' + area);
+            };
+
+            return that;
+        };
+
+        return repositoryFactory();
+    })();
     /* }}} */
 
     return exports;
