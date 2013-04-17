@@ -639,131 +639,164 @@ directory will be world-writable and world-administerable.</p>
 <!-- {{{ -->
 <div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">Package</span> <span class="nx">repository</span> <span class="nx">client</span><span class="o">&gt;&gt;=</span>
 <span class="kd">var</span> <span class="nx">repository</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="kd">function</span> <span class="nx">packageVersion</span> <span class="p">(</span><span class="kr">package</span><span class="p">,</span> <span class="nx">major</span><span class="p">,</span> <span class="nx">minor</span><span class="p">,</span> <span class="nx">patch</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">that</span> <span class="o">=</span> <span class="p">{};</span>
-
-        <span class="kd">var</span> <span class="nx">versionString</span> <span class="o">=</span> <span class="p">[</span><span class="nx">major</span><span class="p">,</span> <span class="nx">minor</span><span class="p">,</span> <span class="nx">patch</span><span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">);</span>
-        <span class="kd">var</span> <span class="nx">packageUrl</span> <span class="o">=</span> <span class="kr">package</span><span class="p">.</span><span class="nx">url</span><span class="p">();</span>
-        <span class="kd">var</span> <span class="nx">sep</span> <span class="o">=</span> <span class="p">(</span><span class="nx">packageUrl</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">packageUrl</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">===</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span> <span class="o">?</span>
-            <span class="s1">&#39;&#39;</span> <span class="o">:</span> <span class="s1">&#39;/&#39;</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">versionUrl</span> <span class="o">=</span> <span class="nx">packageUrl</span> <span class="o">+</span> <span class="nx">sep</span> <span class="o">+</span> <span class="nx">versionString</span><span class="p">;</span>
-
-        <span class="nx">that</span><span class="p">.</span><span class="nx">major</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">major</span><span class="p">;</span> <span class="p">};</span>
-        <span class="nx">that</span><span class="p">.</span><span class="nx">minor</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">minor</span><span class="p">;</span> <span class="p">};</span>
-        <span class="nx">that</span><span class="p">.</span><span class="nx">patch</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">patch</span><span class="p">;</span> <span class="p">};</span>
-        <span class="nx">that</span><span class="p">.</span><span class="nx">url</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">versionUrl</span><span class="p">;</span> <span class="p">};</span>
-
-        <span class="nx">that</span><span class="p">.</span><span class="nx">cmp</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">other</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">that</span><span class="p">.</span><span class="nx">major</span> <span class="o">&lt;</span> <span class="nx">other</span><span class="p">.</span><span class="nx">major</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="p">};</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">that</span><span class="p">.</span><span class="nx">major</span> <span class="o">&gt;</span> <span class="nx">other</span><span class="p">.</span><span class="nx">major</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span>  <span class="mi">1</span><span class="p">;</span> <span class="p">};</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">that</span><span class="p">.</span><span class="nx">minor</span> <span class="o">&lt;</span> <span class="nx">other</span><span class="p">.</span><span class="nx">minor</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="p">};</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">that</span><span class="p">.</span><span class="nx">minor</span> <span class="o">&gt;</span> <span class="nx">other</span><span class="p">.</span><span class="nx">minor</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span>  <span class="mi">1</span><span class="p">;</span> <span class="p">};</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">that</span><span class="p">.</span><span class="nx">patch</span> <span class="o">&lt;</span> <span class="nx">other</span><span class="p">.</span><span class="nx">patch</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="p">};</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">that</span><span class="p">.</span><span class="nx">patch</span> <span class="o">&gt;</span> <span class="nx">other</span><span class="p">.</span><span class="nx">patch</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span>  <span class="mi">1</span><span class="p">;</span> <span class="p">};</span>
-            <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="p">};</span>
-        <span class="nx">that</span><span class="p">.</span><span class="nx">create</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">mkdir</span><span class="p">(</span><span class="nx">versionUrl</span> <span class="o">+</span> <span class="s1">&#39;?&amp;init=1&amp;&#39;</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
-        <span class="p">};</span>
-        <span class="nx">that</span><span class="p">.</span><span class="nx">freeze</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">freezeOptions</span> <span class="o">=</span> <span class="p">{</span><span class="nx">keys</span><span class="o">:</span> <span class="p">{</span>
-                <span class="nx">get</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="nx">put</span><span class="o">:</span> <span class="p">[],</span> <span class="c1">// No PUT e.g. on _options.</span>
-                <span class="nx">ls</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="nx">admin</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="c1">// Allow reads of _options. PUT disabled above.</span>
-                <span class="nx">mkdir</span><span class="o">:</span> <span class="p">[]</span>
-            <span class="p">}};</span>
-            <span class="kd">var</span> <span class="nx">freezeString</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">freezeOptions</span><span class="p">);</span>
-            <span class="nx">put</span><span class="p">(</span><span class="nx">versionUrl</span> <span class="o">+</span> <span class="s1">&#39;/_options&#39;</span><span class="p">,</span> <span class="nx">freezeString</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
-        <span class="p">};</span>
-        <span class="nx">that</span><span class="p">.</span><span class="nx">put</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">put</span><span class="p">(</span><span class="nx">versionUrl</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
-        <span class="p">};</span>
-        <span class="nx">that</span><span class="p">.</span><span class="nx">get</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">get</span><span class="p">(</span><span class="nx">versionUrl</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
-        <span class="p">};</span>
-
-        <span class="k">return</span> <span class="nx">that</span><span class="p">;</span>
-    <span class="p">};</span>
-
-    <span class="kd">function</span> <span class="kr">package</span> <span class="p">(</span><span class="nx">repository</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">that</span> <span class="o">=</span> <span class="p">{};</span>
-
-        <span class="kd">var</span> <span class="nx">repoRoot</span> <span class="o">=</span> <span class="nx">repository</span><span class="p">.</span><span class="nx">url</span><span class="p">();</span>
-        <span class="kd">var</span> <span class="nx">sep</span> <span class="o">=</span> <span class="p">(</span><span class="nx">repoRoot</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">repoRoot</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">===</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39;&#39;</span> <span class="o">:</span> <span class="s1">&#39;/&#39;</span><span class="p">;</span>
-        <span class="kd">var</span> <span class="nx">packageUrl</span> <span class="o">=</span> <span class="nx">repoRoot</span> <span class="o">+</span> <span class="nx">sep</span> <span class="o">+</span> <span class="nx">name</span><span class="p">;</span>
-
-        <span class="kd">function</span> <span class="nx">versionFromString</span> <span class="p">(</span><span class="nx">versionString</span><span class="p">)</span> <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">parts</span> <span class="o">=</span> <span class="nx">versionString</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">);</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">parts</span><span class="p">.</span><span class="nx">length</span> <span class="o">!==</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;A version should have three parts&quot;</span><span class="p">);</span>
-            <span class="p">};</span>
-            <span class="kd">var</span> <span class="nx">numbers</span> <span class="o">=</span> <span class="nx">map</span><span class="p">(</span><span class="nx">parts</span><span class="p">,</span> <span class="nb">parseInt</span><span class="p">);</span>
-            <span class="kd">var</span> <span class="nx">major</span> <span class="o">=</span> <span class="nx">numbers</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
-            <span class="kd">var</span> <span class="nx">minor</span> <span class="o">=</span> <span class="nx">numbers</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
-            <span class="kd">var</span> <span class="nx">patch</span> <span class="o">=</span> <span class="nx">numbers</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
-            <span class="k">return</span> <span class="nx">packageVersion</span><span class="p">(</span><span class="nx">that</span><span class="p">,</span> <span class="nx">major</span><span class="p">,</span> <span class="nx">minor</span><span class="p">,</span> <span class="nx">patch</span><span class="p">);</span>
-        <span class="p">};</span>
-
-        <span class="nx">that</span><span class="p">.</span><span class="nx">url</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">packageUrl</span><span class="p">;</span> <span class="p">};</span>
-
-        <span class="nx">that</span><span class="p">.</span><span class="nx">version</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">major</span><span class="p">,</span> <span class="nx">minor</span><span class="p">,</span> <span class="nx">patch</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nx">packageVersion</span><span class="p">(</span><span class="nx">that</span><span class="p">,</span> <span class="nx">major</span><span class="p">,</span> <span class="nx">minor</span><span class="p">,</span> <span class="nx">patch</span><span class="p">);</span>
-        <span class="p">};</span>
-        <span class="nx">that</span><span class="p">.</span><span class="nx">create</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">mkdir</span><span class="p">(</span><span class="nx">packageUrl</span> <span class="o">+</span> <span class="s1">&#39;?&amp;init=1&amp;&#39;</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
-        <span class="p">};</span>
-        <span class="nx">that</span><span class="p">.</span><span class="nx">allVersions</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">ls</span><span class="p">(</span><span class="nx">packageUrl</span><span class="p">,</span> <span class="kd">function</span> <span class="nx">handleInfo</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">info</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span> <span class="nx">cb</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span> <span class="k">return</span><span class="p">;</span> <span class="p">};</span>
-                <span class="kd">var</span> <span class="nx">versionStrings</span> <span class="o">=</span> <span class="nx">info</span><span class="p">.</span><span class="nx">dirs</span> <span class="o">||</span> <span class="p">[];</span>
-                <span class="kd">var</span> <span class="nx">versions</span> <span class="o">=</span> <span class="nx">map</span><span class="p">(</span><span class="nx">versionStrings</span><span class="p">,</span> <span class="nx">versionFromString</span><span class="p">);</span>
-                <span class="nx">cb</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">versions</span><span class="p">);</span>
-            <span class="p">});</span>
-        <span class="p">};</span>
-        <span class="nx">that</span><span class="p">.</span><span class="nx">latestVersion</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">that</span><span class="p">.</span><span class="nx">allVersions</span><span class="p">(</span><span class="kd">function</span> <span class="nx">handleVersions</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">versions</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span> <span class="nx">cb</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span> <span class="k">return</span><span class="p">;</span> <span class="p">};</span>
-                <span class="kd">var</span> <span class="nx">maxVersion</span> <span class="o">=</span> <span class="nx">max</span><span class="p">(</span><span class="nx">versions</span><span class="p">,</span> <span class="kd">function</span> <span class="nx">cmp</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
-                    <span class="k">return</span> <span class="nx">a</span><span class="p">.</span><span class="nx">cmp</span><span class="p">(</span><span class="nx">b</span><span class="p">);</span>
-                <span class="p">});</span>
-                <span class="nx">cb</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">maxVersion</span><span class="p">);</span>
-            <span class="p">});</span>
-        <span class="p">};</span>
-
-        <span class="k">return</span> <span class="nx">that</span><span class="p">;</span>
-    <span class="p">};</span>
-
-    <span class="kd">function</span> <span class="nx">repository</span> <span class="p">(</span><span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">that</span> <span class="o">=</span> <span class="p">{};</span>
-
-        <span class="nx">that</span><span class="p">.</span><span class="nx">url</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">url</span><span class="p">;</span> <span class="p">};</span>
-
-        <span class="nx">that</span><span class="p">.</span><span class="kr">package</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="kr">package</span><span class="p">(</span><span class="nx">that</span><span class="p">,</span> <span class="nx">name</span><span class="p">);</span>
-        <span class="p">};</span>
-
-        <span class="k">return</span> <span class="nx">that</span><span class="p">;</span>
-    <span class="p">};</span>
-
-    <span class="kd">function</span> <span class="nx">repositoryFactory</span> <span class="p">()</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">that</span> <span class="o">=</span> <span class="p">{};</span>
-
-        <span class="nx">that</span><span class="p">.</span><span class="nx">atUrl</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nx">repository</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span>
-        <span class="p">};</span>
-
-        <span class="nx">that</span><span class="p">.</span><span class="nx">atHeroSpaces</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">area</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nx">repository</span><span class="p">(</span><span class="s1">&#39;http://www.herospaces.com/repo/&#39;</span> <span class="o">+</span> <span class="nx">area</span><span class="p">);</span>
-        <span class="p">};</span>
-        <span class="nx">that</span><span class="p">.</span><span class="nx">atHeroSpace</span> <span class="o">=</span> <span class="nx">that</span><span class="p">.</span><span class="nx">atHeroSpaces</span><span class="p">;</span> <span class="c1">// Backwards-compatibility.</span>
-
-        <span class="k">return</span> <span class="nx">that</span><span class="p">;</span>
-    <span class="p">};</span>
+    <span class="o">&lt;&lt;</span><span class="nx">Repository</span> <span class="nx">client</span><span class="o">:</span> <span class="nx">PackageVersion</span><span class="o">&gt;&gt;</span>
+    <span class="o">&lt;&lt;</span><span class="nx">Repository</span> <span class="nx">client</span><span class="o">:</span> <span class="nx">Package</span><span class="o">&gt;&gt;</span>
+    <span class="o">&lt;&lt;</span><span class="nx">Repository</span> <span class="nx">client</span><span class="o">:</span> <span class="nx">Repository</span><span class="o">&gt;&gt;</span>
+    <span class="o">&lt;&lt;</span><span class="nx">Repository</span> <span class="nx">client</span><span class="o">:</span> <span class="nx">Repository</span> <span class="nx">factory</span><span class="o">&gt;&gt;</span>
 
     <span class="k">return</span> <span class="nx">repositoryFactory</span><span class="p">();</span>
 <span class="p">})();</span>
 <span class="nx">exports</span><span class="p">.</span><span class="nx">repository</span> <span class="o">=</span> <span class="nx">repository</span><span class="p">;</span>
+<span class="err">@</span>
+</pre></div>
+<!-- }}} -->
+
+<h3>Repository client: PackageVersion</h3>
+
+<!-- {{{ -->
+<div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">Repository</span> <span class="nx">client</span><span class="o">:</span> <span class="nx">PackageVersion</span><span class="o">&gt;&gt;=</span>
+<span class="kd">function</span> <span class="nx">packageVersion</span> <span class="p">(</span><span class="kr">package</span><span class="p">,</span> <span class="nx">major</span><span class="p">,</span> <span class="nx">minor</span><span class="p">,</span> <span class="nx">patch</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">that</span> <span class="o">=</span> <span class="p">{};</span>
+
+    <span class="kd">var</span> <span class="nx">versionString</span> <span class="o">=</span> <span class="p">[</span><span class="nx">major</span><span class="p">,</span> <span class="nx">minor</span><span class="p">,</span> <span class="nx">patch</span><span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">packageUrl</span> <span class="o">=</span> <span class="kr">package</span><span class="p">.</span><span class="nx">url</span><span class="p">();</span>
+    <span class="kd">var</span> <span class="nx">sep</span> <span class="o">=</span> <span class="p">(</span><span class="nx">packageUrl</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">packageUrl</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">===</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span> <span class="o">?</span>
+        <span class="s1">&#39;&#39;</span> <span class="o">:</span> <span class="s1">&#39;/&#39;</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">versionUrl</span> <span class="o">=</span> <span class="nx">packageUrl</span> <span class="o">+</span> <span class="nx">sep</span> <span class="o">+</span> <span class="nx">versionString</span><span class="p">;</span>
+
+    <span class="nx">that</span><span class="p">.</span><span class="nx">major</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">major</span><span class="p">;</span> <span class="p">};</span>
+    <span class="nx">that</span><span class="p">.</span><span class="nx">minor</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">minor</span><span class="p">;</span> <span class="p">};</span>
+    <span class="nx">that</span><span class="p">.</span><span class="nx">patch</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">patch</span><span class="p">;</span> <span class="p">};</span>
+    <span class="nx">that</span><span class="p">.</span><span class="nx">url</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">versionUrl</span><span class="p">;</span> <span class="p">};</span>
+
+    <span class="nx">that</span><span class="p">.</span><span class="nx">cmp</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">other</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">that</span><span class="p">.</span><span class="nx">major</span> <span class="o">&lt;</span> <span class="nx">other</span><span class="p">.</span><span class="nx">major</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="p">};</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">that</span><span class="p">.</span><span class="nx">major</span> <span class="o">&gt;</span> <span class="nx">other</span><span class="p">.</span><span class="nx">major</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span>  <span class="mi">1</span><span class="p">;</span> <span class="p">};</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">that</span><span class="p">.</span><span class="nx">minor</span> <span class="o">&lt;</span> <span class="nx">other</span><span class="p">.</span><span class="nx">minor</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="p">};</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">that</span><span class="p">.</span><span class="nx">minor</span> <span class="o">&gt;</span> <span class="nx">other</span><span class="p">.</span><span class="nx">minor</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span>  <span class="mi">1</span><span class="p">;</span> <span class="p">};</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">that</span><span class="p">.</span><span class="nx">patch</span> <span class="o">&lt;</span> <span class="nx">other</span><span class="p">.</span><span class="nx">patch</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="p">};</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">that</span><span class="p">.</span><span class="nx">patch</span> <span class="o">&gt;</span> <span class="nx">other</span><span class="p">.</span><span class="nx">patch</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span>  <span class="mi">1</span><span class="p">;</span> <span class="p">};</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">};</span>
+    <span class="nx">that</span><span class="p">.</span><span class="nx">create</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">mkdir</span><span class="p">(</span><span class="nx">versionUrl</span> <span class="o">+</span> <span class="s1">&#39;?&amp;init=1&amp;&#39;</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
+    <span class="p">};</span>
+    <span class="nx">that</span><span class="p">.</span><span class="nx">freeze</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">freezeOptions</span> <span class="o">=</span> <span class="p">{</span><span class="nx">keys</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">get</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="nx">put</span><span class="o">:</span> <span class="p">[],</span> <span class="c1">// No PUT e.g. on _options.</span>
+            <span class="nx">ls</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="nx">admin</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="c1">// Allow reads of _options. PUT disabled above.</span>
+            <span class="nx">mkdir</span><span class="o">:</span> <span class="p">[]</span>
+        <span class="p">}};</span>
+        <span class="kd">var</span> <span class="nx">freezeString</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">freezeOptions</span><span class="p">);</span>
+        <span class="nx">put</span><span class="p">(</span><span class="nx">versionUrl</span> <span class="o">+</span> <span class="s1">&#39;/_options&#39;</span><span class="p">,</span> <span class="nx">freezeString</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
+    <span class="p">};</span>
+    <span class="nx">that</span><span class="p">.</span><span class="nx">put</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">put</span><span class="p">(</span><span class="nx">versionUrl</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
+    <span class="p">};</span>
+    <span class="nx">that</span><span class="p">.</span><span class="nx">get</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">get</span><span class="p">(</span><span class="nx">versionUrl</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
+    <span class="p">};</span>
+
+    <span class="k">return</span> <span class="nx">that</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="err">@</span>
+<span class="c">&lt;!--</span> <span class="p">}}}</span> <span class="o">--&gt;</span>
+
+<span class="err">###</span> <span class="nx">Repository</span> <span class="nx">client</span><span class="o">:</span> <span class="nx">Package</span>
+
+<span class="c">&lt;!--</span> <span class="p">{{{</span> <span class="o">--&gt;</span>
+<span class="err">```</span><span class="nx">js</span>
+<span class="o">&lt;&lt;</span><span class="nx">Repository</span> <span class="nx">client</span><span class="o">:</span> <span class="nx">Package</span><span class="o">&gt;&gt;=</span>
+<span class="kd">function</span> <span class="kr">package</span> <span class="p">(</span><span class="nx">repository</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">that</span> <span class="o">=</span> <span class="p">{};</span>
+
+    <span class="kd">var</span> <span class="nx">repoRoot</span> <span class="o">=</span> <span class="nx">repository</span><span class="p">.</span><span class="nx">url</span><span class="p">();</span>
+    <span class="kd">var</span> <span class="nx">sep</span> <span class="o">=</span> <span class="p">(</span><span class="nx">repoRoot</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">repoRoot</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">===</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39;&#39;</span> <span class="o">:</span> <span class="s1">&#39;/&#39;</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">packageUrl</span> <span class="o">=</span> <span class="nx">repoRoot</span> <span class="o">+</span> <span class="nx">sep</span> <span class="o">+</span> <span class="nx">name</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="nx">versionFromString</span> <span class="p">(</span><span class="nx">versionString</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">parts</span> <span class="o">=</span> <span class="nx">versionString</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">parts</span><span class="p">.</span><span class="nx">length</span> <span class="o">!==</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;A version should have three parts&quot;</span><span class="p">);</span>
+        <span class="p">};</span>
+        <span class="kd">var</span> <span class="nx">numbers</span> <span class="o">=</span> <span class="nx">map</span><span class="p">(</span><span class="nx">parts</span><span class="p">,</span> <span class="nb">parseInt</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">major</span> <span class="o">=</span> <span class="nx">numbers</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+        <span class="kd">var</span> <span class="nx">minor</span> <span class="o">=</span> <span class="nx">numbers</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+        <span class="kd">var</span> <span class="nx">patch</span> <span class="o">=</span> <span class="nx">numbers</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+        <span class="k">return</span> <span class="nx">packageVersion</span><span class="p">(</span><span class="nx">that</span><span class="p">,</span> <span class="nx">major</span><span class="p">,</span> <span class="nx">minor</span><span class="p">,</span> <span class="nx">patch</span><span class="p">);</span>
+    <span class="p">};</span>
+
+    <span class="nx">that</span><span class="p">.</span><span class="nx">url</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">packageUrl</span><span class="p">;</span> <span class="p">};</span>
+
+    <span class="nx">that</span><span class="p">.</span><span class="nx">version</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">major</span><span class="p">,</span> <span class="nx">minor</span><span class="p">,</span> <span class="nx">patch</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">packageVersion</span><span class="p">(</span><span class="nx">that</span><span class="p">,</span> <span class="nx">major</span><span class="p">,</span> <span class="nx">minor</span><span class="p">,</span> <span class="nx">patch</span><span class="p">);</span>
+    <span class="p">};</span>
+    <span class="nx">that</span><span class="p">.</span><span class="nx">create</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">mkdir</span><span class="p">(</span><span class="nx">packageUrl</span> <span class="o">+</span> <span class="s1">&#39;?&amp;init=1&amp;&#39;</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
+    <span class="p">};</span>
+    <span class="nx">that</span><span class="p">.</span><span class="nx">allVersions</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">ls</span><span class="p">(</span><span class="nx">packageUrl</span><span class="p">,</span> <span class="kd">function</span> <span class="nx">handleInfo</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">info</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span> <span class="nx">cb</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span> <span class="k">return</span><span class="p">;</span> <span class="p">};</span>
+            <span class="kd">var</span> <span class="nx">versionStrings</span> <span class="o">=</span> <span class="nx">info</span><span class="p">.</span><span class="nx">dirs</span> <span class="o">||</span> <span class="p">[];</span>
+            <span class="kd">var</span> <span class="nx">versions</span> <span class="o">=</span> <span class="nx">map</span><span class="p">(</span><span class="nx">versionStrings</span><span class="p">,</span> <span class="nx">versionFromString</span><span class="p">);</span>
+            <span class="nx">cb</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">versions</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">};</span>
+    <span class="nx">that</span><span class="p">.</span><span class="nx">latestVersion</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">that</span><span class="p">.</span><span class="nx">allVersions</span><span class="p">(</span><span class="kd">function</span> <span class="nx">handleVersions</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">versions</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span> <span class="nx">cb</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span> <span class="k">return</span><span class="p">;</span> <span class="p">};</span>
+            <span class="kd">var</span> <span class="nx">maxVersion</span> <span class="o">=</span> <span class="nx">max</span><span class="p">(</span><span class="nx">versions</span><span class="p">,</span> <span class="kd">function</span> <span class="nx">cmp</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nx">a</span><span class="p">.</span><span class="nx">cmp</span><span class="p">(</span><span class="nx">b</span><span class="p">);</span>
+            <span class="p">});</span>
+            <span class="nx">cb</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">maxVersion</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">};</span>
+
+    <span class="k">return</span> <span class="nx">that</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="err">@</span>
+</pre></div>
+<!-- }}} -->
+
+<h3>Repository client: Repository</h3>
+
+<!-- {{{ -->
+<div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">Repository</span> <span class="nx">client</span><span class="o">:</span> <span class="nx">Repository</span><span class="o">&gt;&gt;=</span>
+<span class="kd">function</span> <span class="nx">repository</span> <span class="p">(</span><span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">that</span> <span class="o">=</span> <span class="p">{};</span>
+
+    <span class="nx">that</span><span class="p">.</span><span class="nx">url</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">url</span><span class="p">;</span> <span class="p">};</span>
+
+    <span class="nx">that</span><span class="p">.</span><span class="kr">package</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kr">package</span><span class="p">(</span><span class="nx">that</span><span class="p">,</span> <span class="nx">name</span><span class="p">);</span>
+    <span class="p">};</span>
+
+    <span class="k">return</span> <span class="nx">that</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="err">@</span>
+</pre></div>
+<!-- }}} -->
+
+<h3>Repository client: Repository factory</h3>
+
+<!-- {{{ -->
+<div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">Repository</span> <span class="nx">client</span><span class="o">:</span> <span class="nx">Repository</span> <span class="nx">factory</span><span class="o">&gt;&gt;=</span>
+<span class="kd">function</span> <span class="nx">repositoryFactory</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">that</span> <span class="o">=</span> <span class="p">{};</span>
+
+    <span class="nx">that</span><span class="p">.</span><span class="nx">atUrl</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">repository</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span>
+    <span class="p">};</span>
+
+    <span class="nx">that</span><span class="p">.</span><span class="nx">atHeroSpaces</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">area</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">repository</span><span class="p">(</span><span class="s1">&#39;http://www.herospaces.com/repo/&#39;</span> <span class="o">+</span> <span class="nx">area</span><span class="p">);</span>
+    <span class="p">};</span>
+    <span class="nx">that</span><span class="p">.</span><span class="nx">atHeroSpace</span> <span class="o">=</span> <span class="nx">that</span><span class="p">.</span><span class="nx">atHeroSpaces</span><span class="p">;</span> <span class="c1">// Backwards-compatibility.</span>
+
+    <span class="k">return</span> <span class="nx">that</span><span class="p">;</span>
+<span class="p">};</span>
 <span class="err">@</span>
 </pre></div>
 <!-- }}} -->

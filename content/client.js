@@ -435,6 +435,15 @@
     /*                                                                          */
     /* <Package repository client>=                                             */
     var repository = (function () {
+        /* ```                                                                      */
+        /* <!-- }}} -->                                                             */
+        /*                                                                          */
+        /* ### Repository client: PackageVersion                                    */
+        /*                                                                          */
+        /* <!-- {{{ -->                                                             */
+        /* ```js                                                                    */
+        /*                                                                          */
+        /* <Repository client: PackageVersion>=                                     */
         function packageVersion (package, major, minor, patch) {
             var that = {};
 
@@ -481,7 +490,14 @@
 
             return that;
         };
-
+        /* <!-- }}} -->                                                             */
+        /*                                                                          */
+        /* ### Repository client: Package                                           */
+        /*                                                                          */
+        /* <!-- {{{ -->                                                             */
+        /* ```js                                                                    */
+        /*                                                                          */
+        /* <Repository client: Package>=                                            */
         function package (repository, name) {
             var that = {};
 
@@ -529,7 +545,15 @@
 
             return that;
         };
-
+        /* ```                                                                      */
+        /* <!-- }}} -->                                                             */
+        /*                                                                          */
+        /* ### Repository client: Repository                                        */
+        /*                                                                          */
+        /* <!-- {{{ -->                                                             */
+        /* ```js                                                                    */
+        /*                                                                          */
+        /* <Repository client: Repository>=                                         */
         function repository (url) {
             var that = {};
 
@@ -541,7 +565,15 @@
 
             return that;
         };
-
+        /* ```                                                                      */
+        /* <!-- }}} -->                                                             */
+        /*                                                                          */
+        /* ### Repository client: Repository factory                                */
+        /*                                                                          */
+        /* <!-- {{{ -->                                                             */
+        /* ```js                                                                    */
+        /*                                                                          */
+        /* <Repository client: Repository factory>=                                 */
         function repositoryFactory () {
             var that = {};
 
