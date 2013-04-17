@@ -255,7 +255,7 @@ interact with the HeroSpaces.com website at <a href="http://www.herospaces.com">
 with any compatible web service.</p>
 <div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">Library</span> <span class="nx">name</span> <span class="nx">and</span> <span class="nx">version</span><span class="o">&gt;&gt;=</span>
 <span class="nx">exports</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">&#39;HeroClient&#39;</span><span class="p">;</span>
-<span class="nx">exports</span><span class="p">.</span><span class="nx">version</span> <span class="o">=</span> <span class="s1">&#39;0.2.0&#39;</span><span class="p">;</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">version</span> <span class="o">=</span> <span class="s1">&#39;0.2.1&#39;</span><span class="p">;</span>
 <span class="err">@</span>
 </pre></div>
 <h2>Utility methods</h2>
@@ -436,18 +436,37 @@ partially ordered sets.</p>
 
 <h2>File interface</h2>
 
-<!-- {{{ -->
-<div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">&gt;&gt;=</span>
+<p>We define a simple file level interface that you can use to upload and
+download files as well as manipulate directories.</p>
+
+<h3>File interface: get</h3>
+
+<!-- {{{ -->
+<div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">:</span> <span class="nx">get</span><span class="o">&gt;&gt;=</span>
 <span class="kd">function</span> <span class="nx">get</span> <span class="p">(</span><span class="nx">fileurl</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">doRequest</span><span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="nx">fileurl</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
 <span class="p">};</span>
 <span class="nx">exports</span><span class="p">.</span><span class="nx">get</span> <span class="o">=</span> <span class="nx">get</span><span class="p">;</span>
+<span class="err">@</span>
+</pre></div>
+<!-- }}} -->
 
+<h3>File interface: put</h3>
+
+<!-- {{{ -->
+<div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">:</span> <span class="nx">put</span><span class="o">&gt;&gt;=</span>
 <span class="kd">function</span> <span class="nx">put</span> <span class="p">(</span><span class="nx">fileurl</span><span class="p">,</span> <span class="nx">content</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">doRequest</span><span class="p">(</span><span class="s1">&#39;PUT&#39;</span><span class="p">,</span> <span class="nx">fileurl</span><span class="p">,</span> <span class="nx">content</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
 <span class="p">};</span>
 <span class="nx">exports</span><span class="p">.</span><span class="nx">put</span> <span class="o">=</span> <span class="nx">put</span><span class="p">;</span>
+<span class="err">@</span>
+</pre></div>
+<!-- }}} -->
 
+<h3>File interface: ls</h3>
+
+<!-- {{{ -->
+<div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">:</span> <span class="nx">ls</span><span class="o">&gt;&gt;=</span>
 <span class="kd">function</span> <span class="nx">ls</span> <span class="p">(</span><span class="nx">dirurl</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">function</span> <span class="nx">handleContent</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">content</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span> <span class="nx">cb</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span> <span class="k">return</span><span class="p">;</span> <span class="p">};</span>
@@ -457,7 +476,14 @@ partially ordered sets.</p>
     <span class="nx">doRequest</span><span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="nx">dirurl</span> <span class="o">+</span> <span class="s1">&#39;?&amp;listing=1&amp;&#39;</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">handleContent</span><span class="p">);</span>
 <span class="p">};</span>
 <span class="nx">exports</span><span class="p">.</span><span class="nx">ls</span> <span class="o">=</span> <span class="nx">ls</span><span class="p">;</span>
+<span class="err">@</span>
+</pre></div>
+<!-- }}} -->
 
+<h3>File interface: find</h3>
+
+<!-- {{{ -->
+<div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">:</span> <span class="nx">find</span><span class="o">&gt;&gt;=</span>
 <span class="kd">function</span> <span class="nx">rawFind</span> <span class="p">(</span><span class="nx">dirurl</span><span class="p">,</span> <span class="nx">prefix</span><span class="p">,</span> <span class="nx">cb</span><span class="p">,</span> <span class="nx">doneCb</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">function</span> <span class="nx">handleLs</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">ls</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span> <span class="nx">cb</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span> <span class="k">return</span><span class="p">;</span> <span class="p">};</span>
@@ -496,11 +522,30 @@ partially ordered sets.</p>
     <span class="p">});</span>
 <span class="p">};</span>
 <span class="nx">exports</span><span class="p">.</span><span class="nx">find</span> <span class="o">=</span> <span class="nx">find</span><span class="p">;</span>
+<span class="err">@</span>
+</pre></div>
+<!-- }}} -->
 
+<h3>File interface: mkdir</h3>
+
+<!-- {{{ -->
+<div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">:</span> <span class="nx">mkdir</span><span class="o">&gt;&gt;=</span>
 <span class="kd">function</span> <span class="nx">mkdir</span> <span class="p">(</span><span class="nx">dirurl</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">doRequest</span><span class="p">(</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="nx">dirurl</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
 <span class="p">};</span>
 <span class="nx">exports</span><span class="p">.</span><span class="nx">mkdir</span> <span class="o">=</span> <span class="nx">mkdir</span><span class="p">;</span>
+<span class="err">@</span>
+</pre></div>
+<!-- }}} -->
+
+<!-- {{{ -->
+<div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">&gt;&gt;=</span>
+
+<span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">:</span> <span class="nx">get</span><span class="o">&gt;&gt;</span>
+<span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">:</span> <span class="nx">put</span><span class="o">&gt;&gt;</span>
+<span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">:</span> <span class="nx">ls</span><span class="o">&gt;&gt;</span>
+<span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">:</span> <span class="nx">find</span><span class="o">&gt;&gt;</span>
+<span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">:</span> <span class="nx">mkdir</span><span class="o">&gt;&gt;</span>
 <span class="err">@</span>
 </pre></div>
 <!-- }}} -->

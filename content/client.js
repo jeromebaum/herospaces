@@ -31,7 +31,7 @@
     /*                                                                          */
     /* <Library name and version>=                                              */
     exports.name = 'HeroClient';
-    exports.version = '0.2.0';
+    exports.version = '0.2.1';
     /* ```                                                                      */
     /*                                                                          */
     /* Utility methods                                                          */
@@ -210,23 +210,52 @@
     /* ```                                                                      */
     /* <!-- }}} -->                                                             */
     /*                                                                          */
-    /* File interface                                                           */
-    /* ----                                                                     */
-    /*                                                                          */
     /* <!-- {{{ -->                                                             */
     /* ```javascript                                                            */
     /*                                                                          */
     /* <File interface>=                                                        */
+
+    /* ```                                                                      */
+    /* <!-- }}} -->                                                             */
+    /*                                                                          */
+    /* File interface                                                           */
+    /* ----                                                                     */
+    /*                                                                          */
+    /* We define a simple file level interface that you can use to upload and   */
+    /* download files as well as manipulate directories.                        */
+    /*                                                                          */
+    /* ### File interface: get                                                  */
+    /*                                                                          */
+    /* <!-- {{{ -->                                                            */
+    /* ```js                                                                    */
+    /*                                                                          */
+    /* <File interface: get>=                                                   */
     function get (fileurl, cb) {
         doRequest('GET', fileurl, null, cb);
     };
     exports.get = get;
-
+    /* ```                                                                      */
+    /* <!-- }}} -->                                                             */
+    /*                                                                          */
+    /* ### File interface: put                                                  */
+    /*                                                                          */
+    /* <!-- {{{ -->                                                            */
+    /* ```js                                                                    */
+    /*                                                                          */
+    /* <File interface: put>=                                                   */
     function put (fileurl, content, cb) {
         doRequest('PUT', fileurl, content, cb);
     };
     exports.put = put;
-
+    /* ```                                                                      */
+    /* <!-- }}} -->                                                             */
+    /*                                                                          */
+    /* ### File interface: ls                                                   */
+    /*                                                                          */
+    /* <!-- {{{ -->                                                            */
+    /* ```js                                                                    */
+    /*                                                                          */
+    /* <File interface: ls>=                                                    */
     function ls (dirurl, cb) {
         function handleContent (err, content) {
             if (err) { cb(err); return; };
@@ -236,7 +265,15 @@
         doRequest('GET', dirurl + '?&listing=1&', null, handleContent);
     };
     exports.ls = ls;
-
+    /* ```                                                                      */
+    /* <!-- }}} -->                                                             */
+    /*                                                                          */
+    /* ### File interface: find                                                 */
+    /*                                                                          */
+    /* <!-- {{{ -->                                                            */
+    /* ```js                                                                    */
+    /*                                                                          */
+    /* <File interface: find>=                                                  */
     function rawFind (dirurl, prefix, cb, doneCb) {
         function handleLs (err, ls) {
             if (err) { cb(err); return; };
@@ -275,7 +312,15 @@
         });
     };
     exports.find = find;
-
+    /* ```                                                                      */
+    /* <!-- }}} -->                                                             */
+    /*                                                                          */
+    /* ### File interface: mkdir                                                */
+    /*                                                                          */
+    /* <!-- {{{ -->                                                            */
+    /* ```js                                                                    */
+    /*                                                                          */
+    /* <File interface: mkdir>=                                                 */
     function mkdir (dirurl, cb) {
         doRequest('POST', dirurl, null, cb);
     };
