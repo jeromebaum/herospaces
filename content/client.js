@@ -458,7 +458,7 @@
     /* Usage examples:                                                          */
     /*                                                                          */
     /* ```js                                                                    */
-    /* repository.atHeroSpaces('amber').package('foo').                         */
+    /* HeroClient.repository.atHeroSpaces('amber').package('foo').              */
     /*     version(1, 2, 3).get('code.js', function (err, data) { ... });       */
     /* ```                                                                      */
     /*                                                                          */
