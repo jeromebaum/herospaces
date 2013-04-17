@@ -286,6 +286,36 @@ exports.put = put;
 
 ### File interface: ls
 
+You can list directories by calling `HeroClient.ls('http://...', cb)`.
+We will call the callback with two arguments `error` and `info`. `error`
+behaves as with `get` and `put`. `info` is a dictionary with two keys
+`files` and `dirs` which are arrays containing a list of file names and
+directory names.
+
+Here are examples for what `info` could look like:
+
+```js
+{"files":["_options"],"dirs":["foo"]}
+
+{"files":["_options"],"dirs":[]} // No sub-directories.
+
+{"files":[],"dirs":[]} // Empty directory.
+```
+
+Here is an example of how you could call this:
+
+```js
+var url = 'http://www.herospaces.com/templates/';
+
+HeroClient.ls(url, function (error, info) {
+    if (error) {
+        console.error('Error: ' + error);
+        return;
+    }
+    console.log('Directories:\n' + info.dirs.join('\n'));
+});
+```
+
 <!-- {{{ -->
 ```js
 <<File interface: ls>>=

@@ -517,6 +517,30 @@ and set to error information otherwise.</p>
 
 <h3>File interface: ls</h3>
 
+<p>You can list directories by calling <code>HeroClient.ls(&#39;http://...&#39;, cb)</code>.
+We will call the callback with two arguments <code>error</code> and <code>info</code>. <code>error</code>
+behaves as with <code>get</code> and <code>put</code>. <code>info</code> is a dictionary with two keys
+<code>files</code> and <code>dirs</code> which are arrays containing a list of file names and
+directory names.</p>
+
+<p>Here are examples for what <code>info</code> could look like:</p>
+<div class="highlight"><pre><span class="p">{</span><span class="s2">&quot;files&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;_options&quot;</span><span class="p">],</span><span class="s2">&quot;dirs&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;foo&quot;</span><span class="p">]}</span>
+
+<span class="p">{</span><span class="s2">&quot;files&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;_options&quot;</span><span class="p">],</span><span class="s2">&quot;dirs&quot;</span><span class="o">:</span><span class="p">[]}</span> <span class="c1">// No sub-directories.</span>
+
+<span class="p">{</span><span class="s2">&quot;files&quot;</span><span class="o">:</span><span class="p">[],</span><span class="s2">&quot;dirs&quot;</span><span class="o">:</span><span class="p">[]}</span> <span class="c1">// Empty directory.</span>
+</pre></div>
+<p>Here is an example of how you could call this:</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="s1">&#39;http://www.herospaces.com/templates/&#39;</span><span class="p">;</span>
+
+<span class="nx">HeroClient</span><span class="p">.</span><span class="nx">ls</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">info</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;Error: &#39;</span> <span class="o">+</span> <span class="nx">error</span><span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Directories:\n&#39;</span> <span class="o">+</span> <span class="nx">info</span><span class="p">.</span><span class="nx">dirs</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;\n&#39;</span><span class="p">));</span>
+<span class="p">});</span>
+</pre></div>
 <!-- {{{ -->
 <div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">:</span> <span class="nx">ls</span><span class="o">&gt;&gt;=</span>
 <span class="kd">function</span> <span class="nx">ls</span> <span class="p">(</span><span class="nx">dirurl</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
