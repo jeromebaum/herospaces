@@ -632,13 +632,12 @@ directory will be world-writable and world-administerable.</p>
 
 <h2>Package repository client</h2>
 
+<p>Usage examples:</p>
+<div class="highlight"><pre><span class="nx">repository</span><span class="p">.</span><span class="nx">atHeroSpaces</span><span class="p">(</span><span class="s1">&#39;amber&#39;</span><span class="p">).</span><span class="kr">package</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">).</span>
+    <span class="nx">version</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;code.js&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">});</span>
+</pre></div>
 <!-- {{{ -->
 <div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">Package</span> <span class="nx">repository</span> <span class="nx">client</span><span class="o">&gt;&gt;=</span>
-<span class="cm">/* Usage examples:</span>
-<span class="cm"> *</span>
-<span class="cm"> *     repository.atHeroSpaces(&#39;amber&#39;).package(&#39;foo&#39;).</span>
-<span class="cm"> *         version(1, 2, 3).get(&#39;code.js&#39;, function (err, data) { ... });</span>
-<span class="cm"> */</span>
 <span class="kd">var</span> <span class="nx">repository</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
     <span class="kd">function</span> <span class="nx">packageVersion</span> <span class="p">(</span><span class="kr">package</span><span class="p">,</span> <span class="nx">major</span><span class="p">,</span> <span class="nx">minor</span><span class="p">,</span> <span class="nx">patch</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">that</span> <span class="o">=</span> <span class="p">{};</span>

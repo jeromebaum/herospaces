@@ -411,14 +411,14 @@ exports.mkdir = mkdir;
 Package repository client
 ----
 
+Usage examples:
+
+    repository.atHeroSpaces('amber').package('foo').
+        version(1, 2, 3).get('code.js', function (err, data) { ... });
+
 <!-- {{{ -->
 ```javascript
 <<Package repository client>>=
-/* Usage examples:
- *
- *     repository.atHeroSpaces('amber').package('foo').
- *         version(1, 2, 3).get('code.js', function (err, data) { ... });
- */
 var repository = (function () {
     function packageVersion (package, major, minor, patch) {
         var that = {};
