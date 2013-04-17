@@ -558,6 +558,15 @@ directory names.</p>
 
 <h3>File interface: find</h3>
 
+<p>If you want to handle all sub-directories of a root directory and all
+the files in all those sub-directories then using <code>HeroClient.ls</code> is
+needlessly tedious. So we provide a utility function
+<code>HeroClient.find(&#39;http://...&#39;, cb)</code>. We will call the callback many
+times with three arguments <code>error</code>, <code>name</code> and <code>type</code>. <code>error</code> behaves
+as with <code>get</code> and <code>put</code>. <code>name</code> is a file or directory name relative to
+the root you provided. <code>type</code> is one of <code>&#39;file&#39;, &#39;dir&#39;, &#39;done&#39;</code>. We send
+<code>&#39;done&#39;</code> last. <code>name</code> is unspecified when <code>type == &#39;done&#39;</code>.</p>
+
 <!-- {{{ -->
 <div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">:</span> <span class="nx">find</span><span class="o">&gt;&gt;=</span>
 <span class="kd">function</span> <span class="nx">rawFind</span> <span class="p">(</span><span class="nx">dirurl</span><span class="p">,</span> <span class="nx">prefix</span><span class="p">,</span> <span class="nx">cb</span><span class="p">,</span> <span class="nx">doneCb</span><span class="p">)</span> <span class="p">{</span>

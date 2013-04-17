@@ -346,6 +346,15 @@
     /*                                                                          */
     /* ### File interface: find                                                 */
     /*                                                                          */
+    /* If you want to handle all sub-directories of a root directory and all    */
+    /* the files in all those sub-directories then using `HeroClient.ls` is     */
+    /* needlessly tedious. So we provide a utility function                     */
+    /* `HeroClient.find('http://...', cb)`. We will call the callback many      */
+    /* times with three arguments `error`, `name` and `type`. `error` behaves   */
+    /* as with `get` and `put`. `name` is a file or directory name relative to  */
+    /* the root you provided. `type` is one of `'file', 'dir', 'done'`. We send */
+    /* `'done'` last. `name` is unspecified when `type == 'done'`.              */
+    /*                                                                          */
     /* <!-- {{{ -->                                                            */
     /* ```js                                                                    */
     /*                                                                          */
