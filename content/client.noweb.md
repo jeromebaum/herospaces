@@ -8,7 +8,7 @@ with any compatible web service.
 ```javascript
 <<Library name and version>>=
 exports.name = 'HeroClient';
-exports.version = '0.2.0';
+exports.version = '0.2.1';
 @
 ```
 
