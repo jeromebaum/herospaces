@@ -264,6 +264,8 @@ with any compatible web service.</p>
 in plain JavaScript. Instead of importing bulky libraries we create a
 few lightweight functions by hand.</p>
 
+<p>These methods are not exported.</p>
+
 <!-- {{{ -->
 <div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">Utility</span> <span class="nx">methods</span><span class="o">&gt;&gt;=</span>
 
@@ -453,6 +455,20 @@ download files as well as manipulate directories.</p>
 
 <h3>File interface: get</h3>
 
+<p>To download a file call <code>HeroClient.get(&#39;http://...&#39;, cb)</code>. We will call
+the callback with two arguments <code>error</code> and <code>data</code>. <code>error</code> will be
+falsy if the request succeeded and set to error information otherwise.
+<code>data</code> will have the contents of the file.</p>
+
+<p>Here is an example of how you could call this:</p>
+<div class="highlight"><pre><span class="nx">HeroClient</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;http://www.herospaces.com/&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;Error: &#39;</span> <span class="o">+</span> <span class="nx">error</span><span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
 <!-- {{{ -->
 <div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">:</span> <span class="nx">get</span><span class="o">&gt;&gt;=</span>
 <span class="kd">function</span> <span class="nx">get</span> <span class="p">(</span><span class="nx">fileurl</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
@@ -465,6 +481,30 @@ download files as well as manipulate directories.</p>
 
 <h3>File interface: put</h3>
 
+<p>To upload a file call <code>HeroClient.put(&#39;http://...&#39;, data, cb)</code>. We will
+create the file if necessary and upload the data into it. If the file
+exists we will replace its contents. We will call the callback with a
+single argument <code>error</code>. <code>error</code> will be falsy if the request succeeded
+and set to error information otherwise.</p>
+
+<p>Here is an example of how you could call this:</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="s1">&#39;http://www.herospaces.com/spaces/example/test.txt&#39;</span><span class="p">;</span>
+
+<span class="nx">HeroClient</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="s1">&#39;world&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;Error: &#39;</span> <span class="o">+</span> <span class="nx">error</span><span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nx">HeroClient</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;Error: &#39;</span> <span class="o">+</span> <span class="nx">error</span><span class="p">);</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="c1">// Will output: Hello, world!</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Hello, &#39;</span> <span class="o">+</span> <span class="nx">data</span> <span class="o">+</span> <span class="s1">&#39;!&#39;</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
 <!-- {{{ -->
 <div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">:</span> <span class="nx">put</span><span class="o">&gt;&gt;=</span>
 <span class="kd">function</span> <span class="nx">put</span> <span class="p">(</span><span class="nx">fileurl</span><span class="p">,</span> <span class="nx">content</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>

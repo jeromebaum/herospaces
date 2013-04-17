@@ -41,6 +41,8 @@
     /* in plain JavaScript. Instead of importing bulky libraries we create a    */
     /* few lightweight functions by hand.                                       */
     /*                                                                          */
+    /* These methods are not exported.                                          */
+    /*                                                                          */
     /* <!-- {{{ -->                                                            */
     /* ```js                                                                    */
     /*                                                                          */
@@ -226,6 +228,23 @@
     /*                                                                          */
     /* ### File interface: get                                                  */
     /*                                                                          */
+    /* To download a file call `HeroClient.get('http://...', cb)`. We will call */
+    /* the callback with two arguments `error` and `data`. `error` will be      */
+    /* falsy if the request succeeded and set to error information otherwise.   */
+    /* `data` will have the contents of the file.                               */
+    /*                                                                          */
+    /* Here is an example of how you could call this:                           */
+    /*                                                                          */
+    /* ```js                                                                    */
+    /* HeroClient.get('http://www.herospaces.com/', function (error, data) {    */
+    /*     if (error) {                                                         */
+    /*         console.error('Error: ' + error);                                */
+    /*         return;                                                          */
+    /*     }                                                                    */
+    /*     console.log(data);                                                   */
+    /* });                                                                      */
+    /* ```                                                                      */
+    /*                                                                          */
     /* <!-- {{{ -->                                                            */
     /* ```js                                                                    */
     /*                                                                          */
@@ -238,6 +257,33 @@
     /* <!-- }}} -->                                                             */
     /*                                                                          */
     /* ### File interface: put                                                  */
+    /*                                                                          */
+    /* To upload a file call `HeroClient.put('http://...', data, cb)`. We will  */
+    /* create the file if necessary and upload the data into it. If the file    */
+    /* exists we will replace its contents. We will call the callback with a    */
+    /* single argument `error`. `error` will be falsy if the request succeeded  */
+    /* and set to error information otherwise.                                  */
+    /*                                                                          */
+    /* Here is an example of how you could call this:                           */
+    /*                                                                          */
+    /* ```js                                                                    */
+    /* var url = 'http://www.herospaces.com/spaces/example/test.txt';           */
+    /*                                                                          */
+    /* HeroClient.put(url, 'world', function (error) {                          */
+    /*     if (error) {                                                         */
+    /*         console.error('Error: ' + error);                                */
+    /*         return;                                                          */
+    /*     }                                                                    */
+    /*     HeroClient.get(url, function (error, data) {                         */
+    /*         if (error) {                                                     */
+    /*             console.error('Error: ' + error);                            */
+    /*             return;                                                      */
+    /*         }                                                                */
+    /*         // Will output: Hello, world!                                    */
+    /*         console.log('Hello, ' + data + '!');                             */
+    /*     });                                                                  */
+    /* });                                                                      */
+    /* ```                                                                      */
     /*                                                                          */
     /* <!-- {{{ -->                                                            */
     /* ```js                                                                    */
