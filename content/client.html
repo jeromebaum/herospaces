@@ -632,6 +632,38 @@ directory will be world-writable and world-administerable.</p>
 
 <h2>Package repository client</h2>
 
+<p>On top of the file level interface we define a repository client.
+HeroSpaces.com is able to host any number of project-specific code
+repositories at <a href="http://www.herospaces.com/repo">http://www.herospaces.com/repo</a> and this interface
+provides you with a more abstracted access to those repositories. You
+can also point the client at any compatible location.</p>
+
+<h3>Repository format</h3>
+
+<p>A project-specific repository has a codename. For example <code>amber</code> for
+Amber Smalltalk. Note that this repo is <em>not</em> officially sanctioned by
+the Amber project. The repository root is then at:
+<a href="http://www.herospaces.com/repo/amber">http://www.herospaces.com/repo/amber</a></p>
+
+<p>This directory contains one sub-directory for each package in the
+repository. A visual repository browser for Amber Smalltalk is inside
+the <code>amber</code> repository as <code>repobrowser</code>. The package root is then at:
+<a href="http://www.herospaces.com/repo/amber/repobrowser">http://www.herospaces.com/repo/amber/repobrowser</a></p>
+
+<p>Within this package directory there is one sub-directory for each
+version of the package. The client supports a major minor and patch
+component.</p>
+
+<p>We suggest you use semantic versioning: Bump patch on every
+change. Minor on every backwards-compatible change that introduces new
+features in your API. Major on every backwards-incompatible change.</p>
+
+<p>Version <code>0.0.2</code> of the visual repository browser is then at:
+<a href="http://www.herospaces.com/repo/amber/repobrowser/0.0.2">http://www.herospaces.com/repo/amber/repobrowser/0.0.2</a></p>
+
+<p>The files inside this directory will depend on the circumstances. We do
+not specify anything about its contents except the <code>_options</code> file.</p>
+
 <p>Usage examples:</p>
 <div class="highlight"><pre><span class="nx">repository</span><span class="p">.</span><span class="nx">atHeroSpaces</span><span class="p">(</span><span class="s1">&#39;amber&#39;</span><span class="p">).</span><span class="kr">package</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">).</span>
     <span class="nx">version</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;code.js&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">});</span>

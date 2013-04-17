@@ -411,6 +411,38 @@ exports.mkdir = mkdir;
 Package repository client
 ----
 
+On top of the file level interface we define a repository client.
+HeroSpaces.com is able to host any number of project-specific code
+repositories at http://www.herospaces.com/repo and this interface
+provides you with a more abstracted access to those repositories. You
+can also point the client at any compatible location.
+
+### Repository format
+
+A project-specific repository has a codename. For example `amber` for
+Amber Smalltalk. Note that this repo is *not* officially sanctioned by
+the Amber project. The repository root is then at:
+http://www.herospaces.com/repo/amber
+
+This directory contains one sub-directory for each package in the
+repository. A visual repository browser for Amber Smalltalk is inside
+the `amber` repository as `repobrowser`. The package root is then at:
+http://www.herospaces.com/repo/amber/repobrowser
+
+Within this package directory there is one sub-directory for each
+version of the package. The client supports a major minor and patch
+component.
+
+We suggest you use semantic versioning: Bump patch on every
+change. Minor on every backwards-compatible change that introduces new
+features in your API. Major on every backwards-incompatible change.
+
+Version `0.0.2` of the visual repository browser is then at:
+http://www.herospaces.com/repo/amber/repobrowser/0.0.2
+
+The files inside this directory will depend on the circumstances. We do
+not specify anything about its contents except the `_options` file.
+
 Usage examples:
 
 ```js
