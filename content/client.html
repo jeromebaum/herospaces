@@ -264,6 +264,18 @@ with any compatible web service.</p>
 in plain JavaScript. Instead of importing bulky libraries we create a
 few lightweight functions by hand.</p>
 
+<!-- {{{ -->
+<div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">Utility</span> <span class="nx">methods</span><span class="o">&gt;&gt;=</span>
+
+<span class="o">&lt;&lt;</span><span class="nx">Utility</span><span class="o">:</span> <span class="nx">doRequest</span><span class="o">&gt;&gt;</span>
+<span class="o">&lt;&lt;</span><span class="nx">Utility</span><span class="o">:</span> <span class="nx">join</span><span class="o">&gt;&gt;</span>
+<span class="o">&lt;&lt;</span><span class="nx">Utility</span><span class="o">:</span> <span class="nx">async</span><span class="o">&gt;&gt;</span>
+<span class="o">&lt;&lt;</span><span class="nx">Utility</span><span class="o">:</span> <span class="nx">array</span> <span class="nx">handling</span><span class="o">&gt;&gt;</span>
+<span class="o">&lt;&lt;</span><span class="nx">Utility</span><span class="o">:</span> <span class="nx">max</span><span class="o">&gt;&gt;</span>
+<span class="err">@</span>
+</pre></div>
+<!-- }}} -->
+
 <h3>Utility: doRequest</h3>
 
 <p>If we can make our code runnable both in a browser and inside Node.js
@@ -340,19 +352,35 @@ true-ish. That&#39;s what <code>join</code> does.</p>
 </pre></div>
 <!-- }}} -->
 
+<h3>Utility: async</h3>
+
+<p>We sometimes want to run several callbacks in succession. Instead of
+calling each one in turn and waiting for it to return we can also run it
+asynchronously. As a nice side effect this will stop any errors from
+bubbling up into our code. We simply use <code>setTimeout</code> which works in
+Node.js and in the browser.</p>
+
 <!-- {{{ -->
-<div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">Utility</span> <span class="nx">methods</span><span class="o">&gt;&gt;=</span>
-
-<span class="o">&lt;&lt;</span><span class="nx">Utility</span><span class="o">:</span> <span class="nx">doRequest</span><span class="o">&gt;&gt;</span>
-<span class="o">&lt;&lt;</span><span class="nx">Utility</span><span class="o">:</span> <span class="nx">join</span><span class="o">&gt;&gt;</span>
-
+<div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">Utility</span><span class="o">:</span> <span class="nx">async</span><span class="o">&gt;&gt;=</span>
 <span class="kd">function</span> <span class="nx">async</span> <span class="p">(</span><span class="nx">cb</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">function</span> <span class="nx">doCall</span> <span class="p">()</span> <span class="p">{</span>
         <span class="nx">cb</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>
     <span class="p">};</span>
     <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">doCall</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
 <span class="p">};</span>
+<span class="err">@</span>
+</pre></div>
+<!-- }}} -->
 
+<h3>Utility: array handling</h3>
+
+<p>Browsers do not reliably provide a <code>forEach</code> on arrays. So we provide
+our own. Note that we shouldn&#39;t modify <code>Array.prototype</code>.</p>
+
+<p>We also provide a <code>map</code> function.</p>
+
+<!-- {{{ -->
+<div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">Utility</span><span class="o">:</span> <span class="nx">array</span> <span class="nx">handling</span><span class="o">&gt;&gt;=</span>
 <span class="kd">function</span> <span class="nx">forEach</span> <span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
@@ -368,7 +396,28 @@ true-ish. That&#39;s what <code>join</code> does.</p>
     <span class="p">});</span>
     <span class="k">return</span> <span class="nx">results</span><span class="p">;</span>
 <span class="p">};</span>
+<span class="err">@</span>
+</pre></div>
+<!-- }}} -->
 
+<h3>Utility: max</h3>
+
+<p>When dealing with an array or ordered or partially ordered objects that
+aren&#39;t <code>Number</code>s we cannot use <code>Math.max</code> but may want to find the
+maximum object. For this we can pass in a <code>cmp</code> function that is given
+two objects. The output should follow these rules:</p>
+
+<ul>
+<li><code>cmp(a, b) &lt; 0</code> iff <code>a &lt; b</code></li>
+<li><code>cmp(a, b) &gt; 0</code> iff <code>a &gt; b</code></li>
+<li><code>cmp(a, b) == 0</code> otherwise</li>
+</ul>
+
+<p>Note that <code>cmp(a, b) == 0</code> does not imply <code>a == b</code>. This accounts for
+partially ordered sets.</p>
+
+<!-- {{{ -->
+<div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">Utility</span><span class="o">:</span> <span class="nx">max</span><span class="o">&gt;&gt;=</span>
 <span class="kd">function</span> <span class="nx">max</span> <span class="p">(</span><span class="nx">list</span><span class="p">,</span> <span class="nx">cmp</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;Need at least one value for max()&quot;</span><span class="p">);</span>

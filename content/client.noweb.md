@@ -19,6 +19,19 @@ We need various functionality to support our library that isn't offered
 in plain JavaScript. Instead of importing bulky libraries we create a
 few lightweight functions by hand.
 
+<!-- {{{ -->
+```js
+<<Utility methods>>=
+
+<<Utility: doRequest>>
+<<Utility: join>>
+<<Utility: async>>
+<<Utility: array handling>>
+<<Utility: max>>
+@
+```
+<!-- }}} -->
+
 ### Utility: doRequest
 
 If we can make our code runnable both in a browser and inside Node.js
@@ -97,20 +110,37 @@ function join (base, name) {
 ```
 <!-- }}} -->
 
+### Utility: async
+
+We sometimes want to run several callbacks in succession. Instead of
+calling each one in turn and waiting for it to return we can also run it
+asynchronously. As a nice side effect this will stop any errors from
+bubbling up into our code. We simply use `setTimeout` which works in
+Node.js and in the browser.
+
 <!-- {{{ -->
 ```js
-<<Utility methods>>=
-
-<<Utility: doRequest>>
-<<Utility: join>>
-
+<<Utility: async>>=
 function async (cb, args) {
     function doCall () {
         cb.apply(null, args);
     };
     setTimeout(doCall, 0);
 };
+@
+```
+<!-- }}} -->
 
+### Utility: array handling
+
+Browsers do not reliably provide a `forEach` on arrays. So we provide
+our own. Note that we shouldn't modify `Array.prototype`.
+
+We also provide a `map` function.
+
+<!-- {{{ -->
+```js
+<<Utility: array handling>>=
 function forEach (obj, cb) {
     for (var key in obj) {
         if (obj.hasOwnProperty(key)) {
@@ -126,7 +156,27 @@ function map (obj, cb) {
     });
     return results;
 };
+@
+```
+<!-- }}} -->
 
+### Utility: max
+
+When dealing with an array or ordered or partially ordered objects that
+aren't `Number`s we cannot use `Math.max` but may want to find the
+maximum object. For this we can pass in a `cmp` function that is given
+two objects. The output should follow these rules:
+
+ * `cmp(a, b) < 0` iff `a < b`
+ * `cmp(a, b) > 0` iff `a > b`
+ * `cmp(a, b) == 0` otherwise
+
+Note that `cmp(a, b) == 0` does not imply `a == b`. This accounts for
+partially ordered sets.
+
+<!-- {{{ -->
+```js
+<<Utility: max>>=
 function max (list, cmp, cb) {
     if (list.length === 0) {
         throw new Error("Need at least one value for max()");
