@@ -260,8 +260,20 @@ with any compatible web service.</p>
 </pre></div>
 <h2>Utility methods</h2>
 
+<p>We need various functionality to support our library that isn&#39;t offered
+in plain JavaScript. Instead of importing bulky libraries we create a
+few lightweight functions by hand.</p>
+
+<h3>Utility: doRequest</h3>
+
+<p>If we can make our code runnable both in a browser and inside Node.js
+then that increases its value a lot. So let&#39;s abstract away the details
+of making a HTTP request in a function <code>doRequest</code> that tries to use an
+<code>XMLHttpRequest</code> and falls back on node&#39;s <code>http</code> and <code>url</code> modules.
+While we&#39;re at it we can handle IE&#39;s <code>ActiveXObject</code> quirkiness.</p>
+
 <!-- {{{ -->
-<div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">Utility</span> <span class="nx">methods</span><span class="o">&gt;&gt;=</span>
+<div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">Utility</span><span class="o">:</span> <span class="nx">doRequest</span><span class="o">&gt;&gt;=</span>
 <span class="kd">function</span> <span class="nx">doRequest</span> <span class="p">(</span><span class="nx">method</span><span class="p">,</span> <span class="nx">url</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">function</span> <span class="nx">useXhr</span> <span class="p">(</span><span class="nx">xhr</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">xhr</span><span class="p">.</span><span class="nx">onreadystatechange</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">onXHRResponse</span> <span class="p">()</span> <span class="p">{</span>
@@ -307,11 +319,32 @@ with any compatible web service.</p>
         <span class="nx">req</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
     <span class="p">};</span>
 <span class="p">};</span>
+<span class="err">@</span>
+</pre></div>
+<!-- }}} -->
 
+<h3>Utility: join</h3>
+
+<p>We sometimes base path and a file/directory name. Now say we want to
+join these together. But sometimes the base path will be falsy. The same
+goes for the name. So we only want to add a separator (<code>/</code>) if both are
+true-ish. That&#39;s what <code>join</code> does.</p>
+
+<!-- {{{ -->
+<div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">Utility</span><span class="o">:</span> <span class="nx">join</span><span class="o">&gt;&gt;=</span>
 <span class="kd">function</span> <span class="nx">join</span> <span class="p">(</span><span class="nx">base</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">sep</span> <span class="o">=</span> <span class="p">(</span><span class="nx">base</span> <span class="o">&amp;&amp;</span> <span class="nx">name</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39;/&#39;</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
     <span class="k">return</span> <span class="nx">base</span> <span class="o">+</span> <span class="nx">sep</span> <span class="o">+</span> <span class="nx">name</span><span class="p">;</span>
 <span class="p">};</span>
+<span class="err">@</span>
+</pre></div>
+<!-- }}} -->
+
+<!-- {{{ -->
+<div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">Utility</span> <span class="nx">methods</span><span class="o">&gt;&gt;=</span>
+
+<span class="o">&lt;&lt;</span><span class="nx">Utility</span><span class="o">:</span> <span class="nx">doRequest</span><span class="o">&gt;&gt;</span>
+<span class="o">&lt;&lt;</span><span class="nx">Utility</span><span class="o">:</span> <span class="nx">join</span><span class="o">&gt;&gt;</span>
 
 <span class="kd">function</span> <span class="nx">async</span> <span class="p">(</span><span class="nx">cb</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">function</span> <span class="nx">doCall</span> <span class="p">()</span> <span class="p">{</span>

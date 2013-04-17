@@ -15,9 +15,21 @@ exports.version = '0.2.0';
 Utility methods
 ----
 
+We need various functionality to support our library that isn't offered
+in plain JavaScript. Instead of importing bulky libraries we create a
+few lightweight functions by hand.
+
+### Utility: doRequest
+
+If we can make our code runnable both in a browser and inside Node.js
+then that increases its value a lot. So let's abstract away the details
+of making a HTTP request in a function `doRequest` that tries to use an
+`XMLHttpRequest` and falls back on node's `http` and `url` modules.
+While we're at it we can handle IE's `ActiveXObject` quirkiness.
+
 <!-- {{{ -->
-```javascript
-<<Utility methods>>=
+```js
+<<Utility: doRequest>>=
 function doRequest (method, url, data, cb) {
     function useXhr (xhr) {
         xhr.onreadystatechange = function onXHRResponse () {
@@ -63,11 +75,34 @@ function doRequest (method, url, data, cb) {
         req.end();
     };
 };
+@
+```
+<!-- }}} -->
 
+### Utility: join
+
+We sometimes base path and a file/directory name. Now say we want to
+join these together. But sometimes the base path will be falsy. The same
+goes for the name. So we only want to add a separator (`/`) if both are
+true-ish. That's what `join` does.
+
+<!-- {{{ -->
+```js
+<<Utility: join>>=
 function join (base, name) {
     var sep = (base && name) ? '/' : '';
     return base + sep + name;
 };
+@
+```
+<!-- }}} -->
+
+<!-- {{{ -->
+```js
+<<Utility methods>>=
+
+<<Utility: doRequest>>
+<<Utility: join>>
 
 function async (cb, args) {
     function doCall () {
