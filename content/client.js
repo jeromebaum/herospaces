@@ -12,8 +12,6 @@
 
     exports.name = 'HeroClient';
     exports.version = '0.2.0';
-
-    /* Utility methods {{{ */
     function doRequest (method, url, data, cb) {
         function useXhr (xhr) {
             xhr.onreadystatechange = function onXHRResponse () {
@@ -100,8 +98,6 @@
         });
         return max;
     };
-    /* }}} */
-    /* File interface {{{ */
     function get (fileurl, cb) {
         doRequest('GET', fileurl, null, cb);
     };
@@ -165,8 +161,6 @@
         doRequest('POST', dirurl, null, cb);
     };
     exports.mkdir = mkdir;
-    /* }}} */
-    /* Package repository client {{{ */
     /* Usage examples:
      *
      *     repository.atHeroSpaces('amber').package('foo').
@@ -298,10 +292,6 @@
         return repositoryFactory();
     })();
     exports.repository = repository;
-    /* }}} */
 
     return exports;
 })));
-/* vim600: sw=4 ts=4 fdm=marker
- * vim<600: sw=4 ts=4
- */
