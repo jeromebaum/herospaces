@@ -1,3 +1,13 @@
+/* ```                                                                      */
+/* <!-- }}} -->                                                             */
+/*                                                                          */
+/* Module definition                                                        */
+/* ----                                                                     */
+/*                                                                          */
+/* <!-- {{{ -->                                                             */
+/* ```javascript                                                            */
+/*                                                                          */
+/* <*>=                                                                     */
 (function (root, factory) {
   if (typeof exports === "object" && exports) {
     module.exports = factory(); // CommonJS
@@ -10,8 +20,27 @@
 
     var exports = {};
 
+    /* HeroSpaces Client                                                        */
+    /* ====                                                                     */
+    /*                                                                          */
+    /* This is the HeroSpaces client library in JavaScript. You can use it to   */
+    /* interact with the HeroSpaces.com website at http://www.herospaces.com or */
+    /* with any compatible web service.                                         */
+    /*                                                                          */
+    /* ```javascript                                                            */
+    /*                                                                          */
+    /* <Library name and version>=                                              */
     exports.name = 'HeroClient';
     exports.version = '0.2.0';
+    /* ```                                                                      */
+    /*                                                                          */
+    /* Utility methods                                                          */
+    /* ----                                                                     */
+    /*                                                                          */
+    /* <!-- {{{ -->                                                            */
+    /* ```javascript                                                            */
+    /*                                                                          */
+    /* <Utility methods>=                                                       */
     function doRequest (method, url, data, cb) {
         function useXhr (xhr) {
             xhr.onreadystatechange = function onXHRResponse () {
@@ -98,6 +127,16 @@
         });
         return max;
     };
+    /* ```                                                                      */
+    /* <!-- }}} -->                                                             */
+    /*                                                                          */
+    /* File interface                                                           */
+    /* ----                                                                     */
+    /*                                                                          */
+    /* <!-- {{{ -->                                                             */
+    /* ```javascript                                                            */
+    /*                                                                          */
+    /* <File interface>=                                                        */
     function get (fileurl, cb) {
         doRequest('GET', fileurl, null, cb);
     };
@@ -161,6 +200,16 @@
         doRequest('POST', dirurl, null, cb);
     };
     exports.mkdir = mkdir;
+    /* ```                                                                      */
+    /* <!-- }}} -->                                                             */
+    /*                                                                          */
+    /* Package repository client                                                */
+    /* ----                                                                     */
+    /*                                                                          */
+    /* <!-- {{{ -->                                                             */
+    /* ```javascript                                                            */
+    /*                                                                          */
+    /* <Package repository client>=                                             */
     /* Usage examples:
      *
      *     repository.atHeroSpaces('amber').package('foo').
