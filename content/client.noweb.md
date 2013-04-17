@@ -518,6 +518,7 @@ function packageVersion (package, major, minor, patch) {
     return that;
 };
 @
+```
 <!-- }}} -->
 
 ### Repository client: Package
