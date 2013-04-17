@@ -402,6 +402,13 @@
     /*                                                                          */
     /* ### File interface: mkdir                                                */
     /*                                                                          */
+    /* You can create new directories by calling                                */
+    /* `HeroClient.mkdir('http://...', cb)`. We will call the callback with a   */
+    /* single argument `error` that behaves as with `get` and `put`.            */
+    /*                                                                          */
+    /* If you append a querystring parameter `?init=1` to the url then the new  */
+    /* directory will be world-writable and world-administerable.               */
+    /*                                                                          */
     /* <!-- {{{ -->                                                            */
     /* ```js                                                                    */
     /*                                                                          */
