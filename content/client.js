@@ -210,6 +210,12 @@
     /* ```                                                                      */
     /* <!-- }}} -->                                                             */
     /*                                                                          */
+    /* File interface                                                           */
+    /* ----                                                                     */
+    /*                                                                          */
+    /* We define a simple file level interface that you can use to upload and   */
+    /* download files as well as manipulate directories.                        */
+    /*                                                                          */
     /* <!-- {{{ -->                                                             */
     /* ```javascript                                                            */
     /*                                                                          */
@@ -217,12 +223,6 @@
 
     /* ```                                                                      */
     /* <!-- }}} -->                                                             */
-    /*                                                                          */
-    /* File interface                                                           */
-    /* ----                                                                     */
-    /*                                                                          */
-    /* We define a simple file level interface that you can use to upload and   */
-    /* download files as well as manipulate directories.                        */
     /*                                                                          */
     /* ### File interface: get                                                  */
     /*                                                                          */

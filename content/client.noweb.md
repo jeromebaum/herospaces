@@ -199,6 +199,19 @@ File interface
 We define a simple file level interface that you can use to upload and
 download files as well as manipulate directories.
 
+<!-- {{{ -->
+```javascript
+<<File interface>>=
+
+<<File interface: get>>
+<<File interface: put>>
+<<File interface: ls>>
+<<File interface: find>>
+<<File interface: mkdir>>
+@
+```
+<!-- }}} -->
+
 ### File interface: get
 
 <!-- {{{ -->
@@ -299,19 +312,6 @@ function mkdir (dirurl, cb) {
     doRequest('POST', dirurl, null, cb);
 };
 exports.mkdir = mkdir;
-@
-```
-<!-- }}} -->
-
-<!-- {{{ -->
-```javascript
-<<File interface>>=
-
-<<File interface: get>>
-<<File interface: put>>
-<<File interface: ls>>
-<<File interface: find>>
-<<File interface: mkdir>>
 @
 ```
 <!-- }}} -->

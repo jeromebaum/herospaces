@@ -439,6 +439,18 @@ partially ordered sets.</p>
 <p>We define a simple file level interface that you can use to upload and
 download files as well as manipulate directories.</p>
 
+<!-- {{{ -->
+<div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">&gt;&gt;=</span>
+
+<span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">:</span> <span class="nx">get</span><span class="o">&gt;&gt;</span>
+<span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">:</span> <span class="nx">put</span><span class="o">&gt;&gt;</span>
+<span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">:</span> <span class="nx">ls</span><span class="o">&gt;&gt;</span>
+<span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">:</span> <span class="nx">find</span><span class="o">&gt;&gt;</span>
+<span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">:</span> <span class="nx">mkdir</span><span class="o">&gt;&gt;</span>
+<span class="err">@</span>
+</pre></div>
+<!-- }}} -->
+
 <h3>File interface: get</h3>
 
 <!-- {{{ -->
@@ -534,18 +546,6 @@ download files as well as manipulate directories.</p>
     <span class="nx">doRequest</span><span class="p">(</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="nx">dirurl</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">cb</span><span class="p">);</span>
 <span class="p">};</span>
 <span class="nx">exports</span><span class="p">.</span><span class="nx">mkdir</span> <span class="o">=</span> <span class="nx">mkdir</span><span class="p">;</span>
-<span class="err">@</span>
-</pre></div>
-<!-- }}} -->
-
-<!-- {{{ -->
-<div class="highlight"><pre><span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">&gt;&gt;=</span>
-
-<span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">:</span> <span class="nx">get</span><span class="o">&gt;&gt;</span>
-<span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">:</span> <span class="nx">put</span><span class="o">&gt;&gt;</span>
-<span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">:</span> <span class="nx">ls</span><span class="o">&gt;&gt;</span>
-<span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">:</span> <span class="nx">find</span><span class="o">&gt;&gt;</span>
-<span class="o">&lt;&lt;</span><span class="nx">File</span> <span class="kr">interface</span><span class="o">:</span> <span class="nx">mkdir</span><span class="o">&gt;&gt;</span>
 <span class="err">@</span>
 </pre></div>
 <!-- }}} -->
